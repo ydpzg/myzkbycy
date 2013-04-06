@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parentTextLinearLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#DDDDDD"
+    android:orientation="vertical"
+    android:padding="15dp" >
+
+    <LinearLayout style="@style/user_LinerL_style" >
+
+        <TextView
+            style="@style/user_tv1_style"
+            android:text="登记姓名:" />
+
+        <TextView
+            android:id="@+id/true_name_TV"
+            style="@style/user_tv2_style" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/user_LinerL_style" >
+
+        <TextView
+            style="@style/user_tv1_style"
+            android:text="联系电话:" />
+
+        <TextView
+            android:id="@+id/index_phone_TV"
+            style="@style/user_tv2_style" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/user_LinerL_style" >
+
+        <TextView
+            style="@style/user_tv1_style"
+            android:text="激活状态:" />
+
+        <TextView
+            android:id="@+id/user_active_TV"
+            style="@style/user_tv2_style" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/user_LinerL_style" >
+
+        <TextView
+            style="@style/user_tv1_style"
+            android:text="当前身份:" />
+
+        <TextView
+            android:id="@+id/user_status_TV"
+            style="@style/user_tv2_style" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/user_LinerL_style" >
+
+        <TextView
+            style="@style/user_tv1_style"
+            android:text="套餐类型:" />
+
+        <TextView
+            android:id="@+id/set_price_TV"
+            style="@style/user_tv2_style" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/user_LinerL_style" >
+
+        <TextView
+            style="@style/user_tv1_style"
+            android:text="取菜编号:" />
+
+        <TextView
+            android:id="@+id/middle_number_TV"
+            style="@style/user_tv2_style" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/user_LinerL_style" >
+
+        <TextView
+            style="@style/user_tv1_style"
+            android:text="QQ群交流:" />
+
+        <TextView
+            android:id="@+id/users_qq_TV"
+            style="@style/user_tv2_style" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/user_LinerL_style" >
+
+        <TextView
+            style="@style/user_tv1_style"
+            android:text="飞信联系:" />
+
+        <TextView
+            android:id="@+id/users_feixin_TV"
+            style="@style/user_tv2_style" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/user_LinerL_style" >
+
+        <TextView
+            style="@style/user_tv1_style"
+            android:text="取菜地点:" />
+
+        <TextView
+            android:id="@+id/pickup_place_TV"
+            android:singleLine="false"
+            style="@style/user_tv2_style" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/user_LinerL_style" >
+
+        <TextView
+            style="@style/user_tv1_style"
+            android:text="取菜时间:" />
+
+        <TextView
+            android:id="@+id/pickup_time_TV"
+            android:singleLine="false"
+            style="@style/user_tv2_style" />
+    </LinearLayout>
+
+</LinearLayout>

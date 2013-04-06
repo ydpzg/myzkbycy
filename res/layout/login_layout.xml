@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" 
+    android:background="#DDDDDD">
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/login_username_llt"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+  
+            android:background="@color/white" >
+
+            <EditText
+                android:id="@+id/login_inputusername_et"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="#ffffff"
+                android:layout_marginLeft="10dp"
+                android:hint="@string/username"
+                android:singleLine="true" 
+                android:inputType="number"
+                android:digits="1234567890"
+                android:maxLength="11">
+            </EditText>
+
+            <Button
+                android:id="@+id/login_showhitory_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/visio_user_icon_down" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+           android:layout_height="50dp"
+  
+            android:background="@color/white" 
+            android:layout_marginTop="5dp" >
+
+            <EditText
+                android:id="@+id/login_password_et"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.5"
+                android:ems="10"
+                android:background="#ffffff"
+                android:layout_marginLeft="10dp"
+                android:hint="@string/password"
+                android:inputType="textPassword" 
+                android:singleLine="true"
+                android:maxLength="15">
+            </EditText>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+
+            <CheckBox
+                android:id="@+id/login_rememberpassword_cb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/remember_password"
+                android:button="@drawable/checkbox"
+                android:layout_marginRight="20dp" />
+
+            <CheckBox
+                android:id="@+id/login_autologin_cb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/auto_login"
+                android:button="@drawable/checkbox"
+                android:layout_marginRight="20dp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/login_userlogin_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login"
+            android:background="@drawable/button1" 
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:layout_marginTop="10dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
