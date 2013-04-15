@@ -23,6 +23,7 @@ import com.pail.myzkbycy.control.HistroyUserPreferences;
 import com.pail.myzkbycy.lib.UserFunctions;
 import com.pail.myzkbycy.lib.UserModel;
 import com.pail.myzkbycy.util.DialogUtil;
+import com.pail.myzkbycy.util.ListViewUtil;
 import com.pail.myzkbycy.util.NetworkUtil;
 import com.pail.myzkbycy.util.PxUtil;
 import com.pail.myzkbycy.view.PaymentShowDialog;
@@ -40,6 +41,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -48,6 +50,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -74,6 +77,9 @@ public class PaymentQueryActivity extends BaseActivity {
 	private List<Map<String, Object>> listData;
 	private PaymentQueryAdapter paymentQueryAdapter;
 	private float actionY;
+	private int displayWidth;
+	private int displayHeight;
+	private int list_child_item_height;
 	// private int isClickInx = -1;
 
 	Handler handler = new Handler(new Handler.Callback() {
@@ -101,9 +107,17 @@ public class PaymentQueryActivity extends BaseActivity {
 		setTopText("缴费查询");
 		setBottomVisable(View.GONE);
 
+		Display display = getWindowManager().getDefaultDisplay();
+
+		displayWidth = display.getWidth();
+		displayHeight = display.getHeight();
+		
 		listView = (ListView) findViewById(R.id.list);
 		paymentQueryAdapter = new PaymentQueryAdapter(this);
 		listView.setAdapter(paymentQueryAdapter);
+		
+        list_child_item_height = 0;
+
 		listView.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
@@ -131,7 +145,11 @@ public class PaymentQueryActivity extends BaseActivity {
 				Window win = selectDialog.getWindow();
 				android.view.WindowManager.LayoutParams params = new android.view.WindowManager.LayoutParams();
 				params.x = 0;//设置x坐标
-				params.y = (int) (-PxUtil.dip2px(PaymentQueryActivity.this, 160) + actionY);//设置y坐标
+				Log.i("aaa", ListViewUtil.getListViewHeightBasedOnChildren(listView) + "");
+//				View listItem = paymentQueryAdapter.getView(0, null, listView);
+//		        listItem.measure(0, 0); // 计算子项View 的宽高
+		        list_child_item_height = arg1.getMeasuredHeight() + 1;
+				params.y = (int) (-displayHeight / 2 + list_child_item_height * 2 + actionY);//设置y坐标
 				win.setAttributes(params);
 				selectDialog.setCanceledOnTouchOutside(true);//设置点击Dialog外部任意区域关闭Dialog
 				selectDialog.show();
@@ -140,33 +158,8 @@ public class PaymentQueryActivity extends BaseActivity {
 				TextView payment_way_TV = (TextView) selectDialog.findViewById(R.id.payment_way_TV);
 				payment_way_TV.setText(payment_Details[arg2].getPayment_way());
 
-				// if (listData != null) {
-				// if (isClickInx == arg2) {
-				// listData.get(arg2).put("isClick", false);
-				// isClickInx = -1;
-				// } else {
-				// if(isClickInx != -1) {
-				// listData.get(isClickInx).put("isClick", false);
-				// }
-				// listData.get(arg2).put("isClick", true);
-				// isClickInx = arg2;
-				// }
-				//
-				// allPlantAdapter.notifyDataSetChanged();
-				// }
 			}
 		});
-
-		// true_name_TV = (TextView) findViewById(R.id.true_name_TV);
-		// index_phone_TV = (TextView) findViewById(R.id.index_phone_TV);
-		// user_active_TV = (TextView) findViewById(R.id.user_active_TV);
-		// user_status_TV = (TextView) findViewById(R.id.user_status_TV);
-		// set_price_TV = (TextView) findViewById(R.id.set_price_TV);
-		// middle_number_TV = (TextView) findViewById(R.id.middle_number_TV);
-		// users_qq_TV = (TextView) findViewById(R.id.users_qq_TV);
-		// users_feixin_TV = (TextView) findViewById(R.id.users_feixin_TV);
-		// pickup_place_TV = (TextView) findViewById(R.id.pickup_place_TV);
-		// pickup_time_TV = (TextView) findViewById(R.id.pickup_time_TV);
 	}
 
 	@Override

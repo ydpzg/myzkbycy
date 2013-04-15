@@ -18,7 +18,7 @@ import android.util.Log;
 public class UserFunctions {
 	
 	private JSONParser jsonParser;
-	private static String IPaddr = "http://192.168.1.124/my_zkbycy/index.php";
+	private static String IPaddr = "http://www.zkbycy.com/phone/index.php";
 //	private static String IPaddr = "http://ydpproject001.sinaapp.com/";
 	private static String loginURL = IPaddr;
 	private static String registerURL = IPaddr;

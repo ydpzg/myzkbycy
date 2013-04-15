@@ -1,5 +1,10 @@
 package com.pail.myzkbycy.activity;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,9 +15,12 @@ import org.json.JSONObject;
 
 import com.pail.myzkbycy.BaseActivity;
 import com.pail.myzkbycy.R;
+import com.pail.myzkbycy.bean.PlantInfo;
 import com.pail.myzkbycy.constants.Constant;
 import com.pail.myzkbycy.control.AutoLoginPreferences;
 import com.pail.myzkbycy.control.HistroyUserPreferences;
+import com.pail.myzkbycy.dao.DaoCenter;
+import com.pail.myzkbycy.dao.LSqlContants;
 import com.pail.myzkbycy.lib.UserFunctions;
 import com.pail.myzkbycy.lib.UserModel;
 import com.pail.myzkbycy.util.DialogUtil;
@@ -22,12 +30,15 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,14 +77,85 @@ public class LoginActivity extends BaseActivity {
 	private ProgressDialog pDialog;
 	private JSONObject json;
 	private AutoLoginPreferences autoLoginPreferences;
+	private DaoCenter dao;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-
+		checkDatabase(); 
+		initDao();
 	}
-
+	public void checkDatabase() {
+		// 创建数据库
+		try {
+			File dbf = new File("/data/data/" + getPackageName() + "/databases");
+			Log.i("test", "/data/data/" + getPackageName());
+			if (!dbf.exists()) {
+				dbf.mkdirs();
+				// 复制asseets中的db文件到DB_PATH下
+				copyDataBase();
+//				SQLiteDatabase.openOrCreateDatabase(dbf, null);
+			}
+		} catch (IOException e) {
+			throw new Error("数据库创建失败");
+		} finally {
+			Log.i("test", "success");
+		}
+	}
+	public void initDao() {
+		dao = DaoCenter.getInstance();
+		dao.initDaoCenter(this);
+		dao.open();
+//		ArrayList<Object> ddArrayList = DaoCenter.getInstance().getDao()
+//				.queryAllData("plantinfo", PlantInfo.class);
+//		if (ddArrayList != null) {
+//			// 数据库已存在，do nothing.
+//			Log.i("test", "has one");
+//			for(int i = 0; i < ddArrayList.size();i++) {
+//				Log.i("test", ((PlantInfo)ddArrayList.get(i)).toString());
+//				PlantInfo plantInfo = (PlantInfo)ddArrayList.get(i);
+//			}
+//			PlantInfo plantInfo = (PlantInfo)ddArrayList.get(5);
+//		} else {
+//			// 创建数据库
+//			try {
+//				File dir = new File(getDatabasePath(LSqlContants.DB_NAME).getAbsolutePath());
+//				if (!dir.exists()) {
+//					dir.mkdirs();
+//				}
+//				File dbf = new File(getDatabasePath(LSqlContants.DB_NAME).getAbsolutePath());
+//				if (dbf.exists()) {
+//					dbf.delete();
+//				}
+//				SQLiteDatabase.openOrCreateDatabase(dbf, null);
+//				// 复制asseets中的db文件到DB_PATH下
+//				copyDataBase();
+//			} catch (IOException e) {
+//				throw new Error("数据库创建失败");
+//			} finally {
+//				Log.i("test", "success");
+//			}
+//		}
+	}
+	private void copyDataBase() throws IOException {
+		// Open your local db as the input stream
+		InputStream myInput = this.getAssets().open(LSqlContants.DB_NAME);
+		// Path to the just created empty db
+		String outFileName = getDatabasePath(LSqlContants.DB_NAME).getAbsolutePath();
+		// Open the empty db as the output stream
+		OutputStream myOutput = new FileOutputStream(outFileName);
+		// transfer bytes from the inputfile to the outputfile
+		byte[] buffer = new byte[1024];
+		int length;
+		while ((length = myInput.read(buffer)) > 0) {
+			myOutput.write(buffer, 0, length);
+		}
+		// Close the streams
+		myOutput.flush();
+		myOutput.close();
+		myInput.close();
+	}
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		// TODO Auto-generated method stub
@@ -107,8 +189,8 @@ public class LoginActivity extends BaseActivity {
 				.findViewById(R.id.login_rememberpassword_cb);
 		setTopText(getString(R.string.user_login));
 		setBottomVisable(View.GONE);
-		setRightButton(R.drawable.ic_launcher, View.GONE, null);
-		setLeftButton(R.drawable.ic_launcher, View.GONE, null);
+		setRightButton(R.drawable.logo, View.GONE, null);
+		setLeftButton(R.drawable.logo, View.GONE, null);
 		historyUsers = new ArrayList<String>();
 		historyUsers.add(getString(R.string.login_cleanHistory));
 		histroyList = histroyUserPreferences.quallyAllHistoryUser();

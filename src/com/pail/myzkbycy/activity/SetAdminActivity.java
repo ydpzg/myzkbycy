@@ -63,7 +63,7 @@ import android.widget.LinearLayout;
 
 public class SetAdminActivity extends BaseActivity {
 	
-	private RelativeLayout reLogin_RL, about_RL, cleanHistroy_RL;
+	private RelativeLayout picDownload_RL, reLogin_RL, about_RL, cleanHistroy_RL;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,13 +78,16 @@ public class SetAdminActivity extends BaseActivity {
 		setCenterView(R.layout.set_admin_layout);
 		setTopText("设置管理");
 		setBottomVisable(View.GONE);
-
+		
 		reLogin_RL = (RelativeLayout) findViewById(R.id.reLogin_RL);
 		about_RL = (RelativeLayout) findViewById(R.id.about_RL);
 		cleanHistroy_RL = (RelativeLayout) findViewById(R.id.cleanHistroy_RL);
+		picDownload_RL = (RelativeLayout) findViewById(R.id.picDownload_RL);
+		
 		reLogin_RL.setOnClickListener(this);
 		about_RL.setOnClickListener(this);
 		cleanHistroy_RL.setOnClickListener(this);
+		picDownload_RL.setOnClickListener(this);
 //		listView = (ListView) findViewById(R.id.list);
 //		allPlantAdapter = new AllPlantAdapter(this);
 //		listView.setAdapter(allPlantAdapter);
@@ -177,6 +180,10 @@ public class SetAdminActivity extends BaseActivity {
 			startActivity(intent);
 			setResult(Activity.RESULT_OK);
 			this.finish();
+		}
+		if(v == picDownload_RL) {
+			Intent intent = new Intent(SetAdminActivity.this, SetPicActivity.class);
+			startActivity(intent);
 		}
 	}
 

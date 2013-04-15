@@ -15,14 +15,17 @@ import com.pail.myzkbycy.BaseActivity;
 import com.pail.myzkbycy.R;
 import com.pail.myzkbycy.adapter.AllPlantAdapter;
 import com.pail.myzkbycy.bean.NotificationData;
+import com.pail.myzkbycy.bean.PlantInfo;
 import com.pail.myzkbycy.bean.Plant_Detail;
 import com.pail.myzkbycy.bean.UserInfData;
 import com.pail.myzkbycy.constants.Constant;
 import com.pail.myzkbycy.control.AsynImageLoader;
 import com.pail.myzkbycy.control.HistroyUserPreferences;
+import com.pail.myzkbycy.dao.DaoCenter;
 import com.pail.myzkbycy.lib.UserFunctions;
 import com.pail.myzkbycy.lib.UserModel;
 import com.pail.myzkbycy.util.DialogUtil;
+import com.pail.myzkbycy.util.FileUtil;
 import com.pail.myzkbycy.util.NetworkUtil;
 import com.pail.myzkbycy.util.PicUtil;
 
@@ -75,6 +78,7 @@ public class PlantNutritionActivity extends BaseActivity {
 	private String content, title, picId, webId;
 	private TextView title_TV, content_TV, tip_TV;
 	private ImageView plant_pic;
+	private Bitmap bitmap;
 
 	Handler handler = new Handler(new Handler.Callback() {
 
@@ -103,8 +107,7 @@ public class PlantNutritionActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		plantId = getIntent().getStringExtra("plantId");
-		new addOrDelFriendFromURL().execute("");
+		
 	}
 
 	@Override
@@ -119,7 +122,25 @@ public class PlantNutritionActivity extends BaseActivity {
 		content_TV = (TextView) findViewById(R.id.content_TV);
 		tip_TV = (TextView) findViewById(R.id.tip_TV);
 		plant_pic = (ImageView) findViewById(R.id.plant_pic);
+		
+		plantId = getIntent().getStringExtra("plantId");
+		String classnameString = getIntent().getStringExtra("classname");
 
+		if(classnameString.equals(Constant.ALL_PLANT_ACTIVITY)) {
+			ArrayList<Object> ddArrayList = DaoCenter.getInstance().getDao()
+					.queryOneData("plantinfo", PlantInfo.class, "plantId=" + plantId);
+			if (ddArrayList != null) {
+				PlantInfo plantInfo = (PlantInfo)ddArrayList.get(0);
+				title_TV.setText(plantInfo.getPlantName());
+				content_TV.setText(Html.fromHtml(plantInfo.getPlantContext()));
+				bitmap = FileUtil.getImageFromAssetsFile(this, "pic/" + plantInfo.getPicName() + ".jpg");
+				plant_pic.setImageBitmap(bitmap);
+			} else {
+				Log.i("test", "ddArrayList = null");
+			}
+		} else if(classnameString.equals(Constant.WEEK_OFFER_ACTIVITY)) {
+			new addOrDelFriendFromURL().execute("");
+		}
 	}
 
 	@Override
@@ -203,6 +224,7 @@ public class PlantNutritionActivity extends BaseActivity {
 				// asynImageLoader.showImageAsyn(plant_pic,
 				// "http://192.168.1.124/my_zkbycy/upload_pic/" + picId,
 				// R.drawable.ic_launcher);
+				Log.i("html", content);
 			}
 		}
 	}

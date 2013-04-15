@@ -14,10 +14,12 @@ import com.pail.myzkbycy.BaseActivity;
 import com.pail.myzkbycy.R;
 import com.pail.myzkbycy.adapter.AllPlantAdapter;
 import com.pail.myzkbycy.bean.NotificationData;
+import com.pail.myzkbycy.bean.PlantInfo;
 import com.pail.myzkbycy.bean.Plant_Detail;
 import com.pail.myzkbycy.bean.UserInfData;
 import com.pail.myzkbycy.constants.Constant;
 import com.pail.myzkbycy.control.HistroyUserPreferences;
+import com.pail.myzkbycy.dao.DaoCenter;
 import com.pail.myzkbycy.lib.UserFunctions;
 import com.pail.myzkbycy.lib.UserModel;
 import com.pail.myzkbycy.util.DialogUtil;
@@ -68,6 +70,8 @@ public class AllPlantActivity extends BaseActivity {
 	private List<Map<String, Object>> listData;
 	private AllPlantAdapter allPlantAdapter;
 	private int isClickInx = -1;
+	private String[] imagesNames;
+	private PlantInfo[] plantInfos;
 	
 	Handler handler = new Handler(new Handler.Callback() {
 
@@ -83,7 +87,7 @@ public class AllPlantActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		new addOrDelFriendFromURL().execute("");
+//		new addOrDelFriendFromURL().execute("");
 	}
 
 	@Override
@@ -94,6 +98,17 @@ public class AllPlantActivity extends BaseActivity {
 		setTopText("现有种菜");
 		setBottomVisable(View.GONE);
 
+		setRightButton(R.drawable.button5_home2, View.VISIBLE, new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(AllPlantActivity.this, Gallery3DActivity.class);
+				startActivity(intent);
+				finish();
+			}
+		}, R.string.show3D);
+		
 		listView = (ListView) findViewById(R.id.list);
 		allPlantAdapter = new AllPlantAdapter(this);
 		listView.setAdapter(allPlantAdapter);
@@ -139,17 +154,42 @@ public class AllPlantActivity extends BaseActivity {
 				
 			}
 		});
+		
+		
+		ArrayList<Object> ddArrayList = DaoCenter.getInstance().getDao()
+				.queryAllData("plantinfo", PlantInfo.class);
+		if (ddArrayList != null) {
+			plantInfos = new PlantInfo[ddArrayList.size()];
+			imagesNames = new String[ddArrayList.size()];
+			Log.i("test", "size = " + ddArrayList.size());
+			plant_Details = new Plant_Detail[ddArrayList.size()];
+			for(int i = 0; i < ddArrayList.size();i++) {
+				PlantInfo plantInfo = (PlantInfo)ddArrayList.get(i);
+				plantInfos[i] = plantInfo; 
+				imagesNames[i] = plantInfo.getPicName();
+				
+				plant_Details[i] = new Plant_Detail();
+				// JSONObject tempJsonObject =
+				// json.getJSONObject(json.names()
+				// .get(i).toString());
+				plant_Details[i].setPlant_id(plantInfos[i].getPlantId() + "");
+				plant_Details[i].setPlant_name(plantInfos[i].getPlantName());
+				plant_Details[i].setDruguse_data("123");
+				plant_Details[i].setFertilizer_data("456");
+				plant_Details[i].setClick(false);
+				plant_Details[i].setPlant_time(plantInfos[i].getExpectedTime());
+				plant_Details[i].setCook_web("");
+				Log.i("json", plant_Details[i].toString());
+			}
+			
+			
+			listData = getData(plant_Details);
+			allPlantAdapter.setListItem(listData);
+			handler.sendEmptyMessage(0);
+		} else {
+			Log.i("test", "ddArrayList = " + "null");
+		}
 
-		// true_name_TV = (TextView) findViewById(R.id.true_name_TV);
-		// index_phone_TV = (TextView) findViewById(R.id.index_phone_TV);
-		// user_active_TV = (TextView) findViewById(R.id.user_active_TV);
-		// user_status_TV = (TextView) findViewById(R.id.user_status_TV);
-		// set_price_TV = (TextView) findViewById(R.id.set_price_TV);
-		// middle_number_TV = (TextView) findViewById(R.id.middle_number_TV);
-		// users_qq_TV = (TextView) findViewById(R.id.users_qq_TV);
-		// users_feixin_TV = (TextView) findViewById(R.id.users_feixin_TV);
-		// pickup_place_TV = (TextView) findViewById(R.id.pickup_place_TV);
-		// pickup_time_TV = (TextView) findViewById(R.id.pickup_time_TV);
 	}
 
 	@Override

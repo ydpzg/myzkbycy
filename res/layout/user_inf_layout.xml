@@ -40,7 +40,9 @@
             style="@style/user_tv2_style" />
     </LinearLayout>
 
-    <LinearLayout style="@style/user_LinerL_style" >
+    <LinearLayout style="@style/user_LinerL_style" 
+        android:visibility="gone"
+        >
 
         <TextView
             style="@style/user_tv1_style"
@@ -77,7 +79,7 @@
 
         <TextView
             style="@style/user_tv1_style"
-            android:text="QQ群交流:" />
+            android:text="Q 群交流:" />
 
         <TextView
             android:id="@+id/users_qq_TV"

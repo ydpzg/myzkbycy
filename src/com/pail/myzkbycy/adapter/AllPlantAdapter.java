@@ -130,6 +130,7 @@ public class AllPlantAdapter extends BaseAdapter {
 			case R.id.nutrition_btn:
 				intent = new Intent(context, PlantNutritionActivity.class);
 				intent.putExtra("plantId", v.getTag().toString());
+				intent.putExtra("classname", context.getClass().getName());
 				context.startActivity(intent);
 				break;
 			case R.id.cook_btn:

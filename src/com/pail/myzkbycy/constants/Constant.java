@@ -30,6 +30,10 @@ public class Constant {
 	 * 自动登录
 	 */
 	public static String AUTO_LOGIN = "com.myzkbycy.auto_login";
+	/**
+	 * 自动登录
+	 */
+	public static String SET = "com.myzkbycy.set";
 	
 	/**
 	 * MainActivity退出码
@@ -37,5 +41,7 @@ public class Constant {
 	public static int MAIN_EXIT = 111;
 	
 	
+	public static String ALL_PLANT_ACTIVITY = "com.pail.myzkbycy.activity.AllPlantActivity";
+	public static String WEEK_OFFER_ACTIVITY = "com.pail.myzkbycy.activity.WeekOfferActivity";
 	
 }
