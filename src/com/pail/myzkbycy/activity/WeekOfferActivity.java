@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import com.pail.myzkbycy.BaseActivity;
 import com.pail.myzkbycy.R;
+import com.pail.myzkbycy.activity.NotificationActivity.addOrDelFriendFromURL;
 import com.pail.myzkbycy.adapter.AllPlantAdapter;
 import com.pail.myzkbycy.bean.NotificationData;
 import com.pail.myzkbycy.bean.Plant_Detail;
@@ -83,7 +84,12 @@ public class WeekOfferActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		new addOrDelFriendFromURL().execute("");
+		if(NetworkUtil.getInstance().isNetworkGood(WeekOfferActivity.this)){
+			new addOrDelFriendFromURL().execute("");
+		} else {
+			DialogUtil.getInstance().showTipDialog(WeekOfferActivity.this,
+					 "网络连接不正常，请检查");
+		}
 	}
 
 	@Override
@@ -120,25 +126,25 @@ public class WeekOfferActivity extends BaseActivity {
 				}
 			}
 		});
-		listView.setOnScrollListener(new OnScrollListener() {
-			
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				// TODO Auto-generated method stub
-				if(isClickInx != -1) {
-					listData.get(isClickInx).put("isClick", false);
-					allPlantAdapter.notifyDataSetChanged();
-					isClickInx = -1;
-				}
-			}
-			
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+//		listView.setOnScrollListener(new OnScrollListener() {
+//			
+//			@Override
+//			public void onScrollStateChanged(AbsListView view, int scrollState) {
+//				// TODO Auto-generated method stub
+//				if(isClickInx != -1) {
+//					listData.get(isClickInx).put("isClick", false);
+//					allPlantAdapter.notifyDataSetChanged();
+//					isClickInx = -1;
+//				}
+//			}
+//			
+//			@Override
+//			public void onScroll(AbsListView view, int firstVisibleItem,
+//					int visibleItemCount, int totalItemCount) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		});
 
 		// true_name_TV = (TextView) findViewById(R.id.true_name_TV);
 		// index_phone_TV = (TextView) findViewById(R.id.index_phone_TV);
@@ -171,16 +177,15 @@ public class WeekOfferActivity extends BaseActivity {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
 			pDialog = UserFunctions.createProgressDialog(WeekOfferActivity.this,
-					"后台忙碌中，请稍后...");
+					"数据处理中，请稍候...");
 		}
 
 		@Override
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
-			UserFunctions userFunction = new UserFunctions();
 			Message msg = new Message();
 			Bundle data = new Bundle();
-			JSONObject json = userFunction.getWeekOffer();
+			JSONObject json = UserFunctions.getInstance().getWeekOffer();
 			if (json == null) {
 				return "failConnection";
 			}
@@ -294,14 +299,6 @@ public class WeekOfferActivity extends BaseActivity {
 			
 			lData.add(map);
 		}
-		//多出来一个是为了解决最后一行看不到
-		map = new HashMap<String, Object>();
-		map.put("item_id", "");
-		map.put("item_name", "");
-		map.put("item_date", "");
-		map.put("isClick", false);
-		map.put("web_link", "");
-		lData.add(map);
 
 		return lData;
 	}

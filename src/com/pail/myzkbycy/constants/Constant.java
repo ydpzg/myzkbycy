@@ -1,14 +1,6 @@
 package com.pail.myzkbycy.constants;
 
 
-/**
- * 
- * @ClassName Constant.java
- * @Description 放置常量
- * @author Derek zhang dzhang@xtremeprog.com
- * @date 2013-1-9
- *
- */
 public class Constant {
 
 	/**
@@ -34,6 +26,7 @@ public class Constant {
 	 * 自动登录
 	 */
 	public static String SET = "com.myzkbycy.set";
+	public static String CUR_USER = "com.myzkbycy.curuser";
 	
 	/**
 	 * MainActivity退出码

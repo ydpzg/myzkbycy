@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parentTextLinearLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#DDDDDD"
+    android:orientation="vertical"
+    android:padding="15dp" >
+
+    <LinearLayout style="@style/user_LinerL_style" >
+
+        <TextView
+            style="@style/user_tv1_style"
+            android:text="当前套餐:" />
+
+        <TextView
+            android:id="@+id/set_TV"
+            style="@style/user_tv2_style" />
+    </LinearLayout>
+    <LinearLayout style="@style/user_LinerL_style" >
+
+        <TextView
+            style="@style/user_tv1_style"
+            android:text="套餐价格:" />
+
+        <TextView
+            android:id="@+id/price_TV"
+            style="@style/user_tv2_style" />
+    </LinearLayout>
+    <LinearLayout style="@style/user_LinerL_style" >
+
+        <TextView
+            style="@style/user_tv1_style"
+            android:text="今日取菜:" />
+
+        <TextView
+            android:id="@+id/show_TV"
+            android:singleLine="false"
+            style="@style/user_tv2_style" />
+    </LinearLayout>
+
+
+</LinearLayout>

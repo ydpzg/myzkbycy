@@ -19,6 +19,7 @@ import com.pail.myzkbycy.bean.PlantInfo;
 import com.pail.myzkbycy.constants.Constant;
 import com.pail.myzkbycy.control.AutoLoginPreferences;
 import com.pail.myzkbycy.control.HistroyUserPreferences;
+import com.pail.myzkbycy.control.LoginUserPreferences;
 import com.pail.myzkbycy.dao.DaoCenter;
 import com.pail.myzkbycy.dao.LSqlContants;
 import com.pail.myzkbycy.lib.UserFunctions;
@@ -85,6 +86,14 @@ public class LoginActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		checkDatabase(); 
 		initDao();
+		if(autoLoginPreferences.getAutoLogin("auto_login")) {
+			String loginName = AutoLoginPreferences.getInstance(this).getNameValue("autoLoginName");
+			String pw = HistroyUserPreferences.getInstance(this).getHistoryPW(loginName);
+			et_userName.setText(loginName);
+			et_password.setText(pw);
+			cb_autoLogin.setChecked(true);
+			btn_login.performClick();
+		}
 	}
 	public void checkDatabase() {
 		// 创建数据库
@@ -174,10 +183,7 @@ public class LoginActivity extends BaseActivity {
 		histroyUserPreferences = HistroyUserPreferences.getInstance(this);
 		autoLoginPreferences = AutoLoginPreferences.getInstance(this);
 		
-		if(autoLoginPreferences.getAutoLogin("auto_login")) {
-			turnToMainActivity();
-			LoginActivity.this.finish();
-		}
+		
 		
 		setCenterView(R.layout.login_layout);
 		et_password = (EditText) this.findViewById(R.id.login_password_et);
@@ -459,6 +465,7 @@ public class LoginActivity extends BaseActivity {
 		Toast.makeText(this, "登陆成功", Toast.LENGTH_SHORT).show();
 		Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 //		intent.putExtra("userModel", userModel);
+		LoginUserPreferences.getInstance(this).setLoginUser(et_userName.getText().toString());
 		startActivity(intent);
 	}
 
@@ -469,17 +476,16 @@ public class LoginActivity extends BaseActivity {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
 			pDialog = UserFunctions.createProgressDialog(LoginActivity.this,
-					"后台忙碌中，请稍后...");
+					"正在登陆中，请稍后...");
 		}
 
 		@Override
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
-			UserFunctions userFunction = new UserFunctions();
 			Message msg = new Message();
 			Bundle data = new Bundle();
 			try {
-				json = userFunction.loginUser(et_userName.getText().toString(),
+				json = UserFunctions.getInstance().loginUser(et_userName.getText().toString(),
 						et_password.getText().toString());
 
 			} catch (Exception e) {
@@ -537,6 +543,9 @@ public class LoginActivity extends BaseActivity {
 						}
 						if (cb_autoLogin.isChecked()) {
 							autoLoginPreferences.setAutoLogin("auto_login");
+							autoLoginPreferences.setNameValue("autoLoginName", et_userName.getText().toString());
+						} else {
+							autoLoginPreferences.removeAutoLogin("auto_login");
 						}
 						autoLoginPreferences.setNameValue("user", et_userName.getText().toString());
 						autoLoginPreferences.setNameValue("password", et_password.getText().toString());

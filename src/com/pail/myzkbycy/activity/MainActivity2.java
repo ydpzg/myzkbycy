@@ -88,10 +88,9 @@ public class MainActivity2 extends Activity {
 		@Override
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
-			UserFunctions userFunction = new UserFunctions();
 			Message msg = new Message();
 			Bundle data = new Bundle();
-			JSONObject json = userFunction.loginUser("13760625015", "1");
+			JSONObject json = UserFunctions.getInstance().loginUser("13760625015", "1");
 //			notificationDatas = new NotificationData[json.length()];
 //			for (int i = 0; i < json.length(); i++) {
 //				try {

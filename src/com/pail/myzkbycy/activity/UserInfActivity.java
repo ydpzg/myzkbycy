@@ -14,6 +14,7 @@ import com.pail.myzkbycy.bean.NotificationData;
 import com.pail.myzkbycy.bean.UserInfData;
 import com.pail.myzkbycy.constants.Constant;
 import com.pail.myzkbycy.control.HistroyUserPreferences;
+import com.pail.myzkbycy.control.LoginUserPreferences;
 import com.pail.myzkbycy.lib.UserFunctions;
 import com.pail.myzkbycy.lib.UserModel;
 import com.pail.myzkbycy.util.DialogUtil;
@@ -61,12 +62,17 @@ public class UserInfActivity extends BaseActivity {
 	private TextView true_name_TV, index_phone_TV, user_active_TV,
 			user_status_TV, set_price_TV, middle_number_TV, users_qq_TV,
 			users_feixin_TV, pickup_place_TV, pickup_time_TV;
-
+	private String loginUser;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		new addOrDelFriendFromURL().execute("");
+		if(NetworkUtil.getInstance().isNetworkGood(UserInfActivity.this)){
+			new addOrDelFriendFromURL().execute("");
+		} else {
+			DialogUtil.getInstance().showTipDialog(UserInfActivity.this,
+					 "网络连接不正常，请检查");
+		}
 	}
 
 	@Override
@@ -79,6 +85,8 @@ public class UserInfActivity extends BaseActivity {
 		// parentTextLinearLayout = (LinearLayout)
 		// findViewById(R.id.parentTextLinearLayout);
 
+		loginUser = LoginUserPreferences.getInstance(this).getLoginUser();
+		
 		true_name_TV = (TextView) findViewById(R.id.true_name_TV);
 		index_phone_TV = (TextView) findViewById(R.id.index_phone_TV);
 		user_active_TV = (TextView) findViewById(R.id.user_active_TV);
@@ -110,16 +118,15 @@ public class UserInfActivity extends BaseActivity {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
 			pDialog = UserFunctions.createProgressDialog(UserInfActivity.this,
-					"后台忙碌中，请稍后...");
+					"数据处理中，请稍候...");
 		}
 
 		@Override
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
-			UserFunctions userFunction = new UserFunctions();
 			Message msg = new Message();
 			Bundle data = new Bundle();
-			JSONObject json = userFunction.getUserInf("13760625015");
+			JSONObject json = UserFunctions.getInstance().getUserInf(loginUser);
 			if (json == null) {
 				return "failConnection";
 			}

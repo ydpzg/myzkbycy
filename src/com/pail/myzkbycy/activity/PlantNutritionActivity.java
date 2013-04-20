@@ -162,16 +162,15 @@ public class PlantNutritionActivity extends BaseActivity {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
 			pDialog = UserFunctions.createProgressDialog(
-					PlantNutritionActivity.this, "后台忙碌中，请稍后...");
+					PlantNutritionActivity.this, "数据处理中，请稍候...");
 		}
 
 		@Override
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
-			UserFunctions userFunction = new UserFunctions();
 			Message msg = new Message();
 			Bundle data = new Bundle();
-			JSONObject json = userFunction.getPlantDetail(plantId,
+			JSONObject json = UserFunctions.getInstance().getPlantDetail(plantId,
 					"nutrition_value");
 			if (json == null) {
 				return "failConnection";

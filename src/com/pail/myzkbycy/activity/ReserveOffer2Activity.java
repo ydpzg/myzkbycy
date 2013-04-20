@@ -19,6 +19,7 @@ import com.pail.myzkbycy.bean.Plant_Detail;
 import com.pail.myzkbycy.bean.UserInfData;
 import com.pail.myzkbycy.constants.Constant;
 import com.pail.myzkbycy.control.HistroyUserPreferences;
+import com.pail.myzkbycy.control.LoginUserPreferences;
 import com.pail.myzkbycy.lib.UserFunctions;
 import com.pail.myzkbycy.lib.UserModel;
 import com.pail.myzkbycy.util.DialogUtil;
@@ -88,6 +89,7 @@ public class ReserveOffer2Activity extends BaseActivity implements
 	private ReserveOffer2Adapter reserveOffer2Adapter;
 	private final String[] weekNameStrings = { "Mon", "Tue", "Wed", "Thr",
 			"Fri" };
+	private String loginUser;
 
 	// private int isClickInx = -1;
 
@@ -117,6 +119,8 @@ public class ReserveOffer2Activity extends BaseActivity implements
 		setTopText("预定配菜");
 		setBottomVisable(View.GONE);
 
+		loginUser = LoginUserPreferences.getInstance(this).getLoginUser();
+		
 		detector = new GestureDetector(this);
 		flipper = (ViewFlipper) this.findViewById(R.id.ViewFlipper);
 

@@ -11,14 +11,19 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import com.pail.myzkbycy.util.NetworkUtil;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
 public class UserFunctions {
 	
-	private JSONParser jsonParser;
+	private static JSONParser jsonParser;
+	private static UserFunctions userFunctions;
+//	private static String IPaddr = "http://119.147.24.224/phone/index.php";
 	private static String IPaddr = "http://www.zkbycy.com/phone/index.php";
+//	private static String IPaddr = "http://192.168.1.22/my_zkbycy/phone/index.php";
 //	private static String IPaddr = "http://ydpproject001.sinaapp.com/";
 	private static String loginURL = IPaddr;
 	private static String registerURL = IPaddr;
@@ -44,16 +49,23 @@ public class UserFunctions {
 	private static String sendSelectedFriends_tag = "sendSelectedFriends";
 	private static String sendRejectFriends_tag = "sendRejectFriends";
 	// constructor
-	public UserFunctions(){
-		jsonParser = new JSONParser();
+	private UserFunctions(){
+		
 	}
-	
+	public static UserFunctions getInstance() {
+		if(userFunctions == null) {
+			userFunctions = new UserFunctions(); 
+			jsonParser = new JSONParser();
+		}
+		return userFunctions;
+	}
 	public static ProgressDialog  createProgressDialog(Context mContext, String str) {		
 		ProgressDialog pDialog = new ProgressDialog(mContext);
 		pDialog.setMessage(str);
 		pDialog.setIndeterminate(false);
 		pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		pDialog.setCancelable(true);
+		pDialog.setCanceledOnTouchOutside(false);
 		pDialog.show();
 		return pDialog;
 	}
@@ -62,17 +74,60 @@ public class UserFunctions {
 	 * @param email
 	 * @param password
 	 * */
-	public JSONObject getNotification(String testString){
+	
+	public static JSONObject getTodayCai(String login_name){
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("tag", "notification"));
-		params.add(new BasicNameValuePair("testString", testString));
+		params.add(new BasicNameValuePair("tag", "today_cai"));
+		params.add(new BasicNameValuePair("login_name", login_name));
 		JSONObject json = jsonParser.getJSONFromUrl(IPaddr, params);
 		// return json
 		// Log.e("JSON", json.toString());
 		return json;
 	}
-	public JSONObject getPlantDetail(String plantId, String interTag){
+	public static JSONObject getSetmeal(String login_name, String changesetmeal, String issetting){
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", "setmeal"));
+		params.add(new BasicNameValuePair("login_name", login_name));
+		params.add(new BasicNameValuePair("changesetmeal", changesetmeal));
+		params.add(new BasicNameValuePair("issetting", issetting));
+		JSONObject json = jsonParser.getJSONFromUrl(IPaddr, params);
+		// return json
+		// Log.e("JSON", json.toString());
+		return json;
+	}
+	public static JSONObject getTitlesNotification(){
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", "notification"));
+		params.add(new BasicNameValuePair("inter_tag", "titleNoti"));
+		JSONObject json = jsonParser.getJSONFromUrl(IPaddr, params);
+		// return json
+		// Log.e("JSON", json.toString());
+		return json;
+	}
+	public static JSONObject getContentNotification(String news_id){
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", "notification"));
+		params.add(new BasicNameValuePair("inter_tag", "contentNoti"));
+		params.add(new BasicNameValuePair("news_id", news_id));
+		JSONObject json = jsonParser.getJSONFromUrl(IPaddr, params);
+		// return json
+		// Log.e("JSON", json.toString());
+		return json;
+	}
+	public static JSONObject getLastNotification(){
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", "notification"));
+		params.add(new BasicNameValuePair("inter_tag", "lastNotification"));
+		JSONObject json = jsonParser.getJSONFromUrl(IPaddr, params);
+		// Log.e("JSON", json.toString());
+		return json;
+	}
+	public static JSONObject getPlantDetail(String plantId, String interTag){
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", "plant_detail"));
@@ -83,7 +138,7 @@ public class UserFunctions {
 		// Log.e("JSON", json.toString());
 		return json;
 	}
-	public JSONObject getAllPlant(){
+	public static JSONObject getAllPlant(){
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", "all_plant"));
@@ -92,22 +147,44 @@ public class UserFunctions {
 		// Log.e("JSON", json.toString());
 		return json;
 	}
+	public static JSONObject getPackageInf(String login_name, String inter_tag, String value){
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", "package_inf"));
+		params.add(new BasicNameValuePair("login_name", login_name));
+		params.add(new BasicNameValuePair("inter_tag", inter_tag));
+		params.add(new BasicNameValuePair("value", value));
+		JSONObject json = jsonParser.getJSONFromUrl(IPaddr, params);
+		// return json
+		// Log.e("JSON", json.toString());
+		return json;
+	}
 	//"getUserActive"
-	public JSONObject getUnsubscribe(String login_name, String inter_tag, String userActiveValue){
+	public static JSONObject getUnsubscribe(String login_name, String inter_tag, String activeStatusValue){
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", "unsubscribe"));
 		params.add(new BasicNameValuePair("login_name", login_name));
 		params.add(new BasicNameValuePair("inter_tag", inter_tag));
-		if(!userActiveValue.equals("0") ) {
-			params.add(new BasicNameValuePair("userActiveValue", userActiveValue));
+		if(!activeStatusValue.equals("0") ) {
+			params.add(new BasicNameValuePair("activeStatusValue", activeStatusValue));
 		}
 		JSONObject json = jsonParser.getJSONFromUrl(IPaddr, params);
 		// return json
 		// Log.e("JSON", json.toString());
 		return json;
 	}
-	public JSONObject getWeekOffer(){
+	public static JSONObject getPaymentInf(String login_name){
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", "payment"));
+		params.add(new BasicNameValuePair("login_name", login_name));
+		JSONObject json = jsonParser.getJSONFromUrl(IPaddr, params);
+		// return json
+		// Log.e("JSON", json.toString());
+		return json;
+	}
+	public static JSONObject getWeekOffer(){
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", "week_offer"));
@@ -116,7 +193,7 @@ public class UserFunctions {
 		// Log.e("JSON", json.toString());
 		return json;
 	}
-	public JSONObject getUserInf(String login_name){
+	public static JSONObject getUserInf(String login_name){
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", "user_inf"));
@@ -126,7 +203,7 @@ public class UserFunctions {
 		// Log.e("JSON", json.toString());
 		return json;
 	}
-	public JSONObject loginUser(String login_name, String password){
+	public static JSONObject loginUser(String login_name, String password){
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", login_tag));
@@ -137,7 +214,7 @@ public class UserFunctions {
 		// Log.e("JSON", json.toString());
 		return json;
 	}
-	public JSONObject storePosition(String email, String longitude, String latitude, String addr){
+	public static JSONObject storePosition(String email, String longitude, String latitude, String addr){
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", store_tag));
@@ -149,14 +226,14 @@ public class UserFunctions {
 		// Log.e("JSON", json.toString());
 		return json;
 	}
-	public JSONObject getPosition(String email) {
+	public static JSONObject getPosition(String email) {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", getPosition_tag));
 		params.add(new BasicNameValuePair("email", email));
 		JSONObject json = jsonParser.getJSONFromUrl(getPositionURL, params);
 		return json;
 	}
-	public JSONObject sendSelectedFriends(String email, String selectedFriends) {
+	public static JSONObject sendSelectedFriends(String email, String selectedFriends) {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", sendSelectedFriends_tag));
 		params.add(new BasicNameValuePair("email", email));
@@ -165,7 +242,7 @@ public class UserFunctions {
 		JSONObject json = jsonParser.getJSONFromUrl(sendSelectedFriendsURL, params);
 		return json;
 	}
-	public JSONObject sendRejectFriends(String email, String selectedFriends) {
+	public static JSONObject sendRejectFriends(String email, String selectedFriends) {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", sendRejectFriends_tag));
 		params.add(new BasicNameValuePair("email", email));
@@ -174,28 +251,28 @@ public class UserFunctions {
 		JSONObject json = jsonParser.getJSONFromUrl(sendRejectFriendsURL, params);
 		return json;
 	}
-	public JSONObject getAllUser(String email) {
+	public static JSONObject getAllUser(String email) {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", getAllUser_tag));
 		params.add(new BasicNameValuePair("email", email));
 		JSONObject json = jsonParser.getJSONFromUrl(getAllUserURL, params);
 		return json;
 	}
-	public JSONObject getAllPosition(String email) {
+	public static JSONObject getAllPosition(String email) {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", getAllPosition_tag));
 		params.add(new BasicNameValuePair("email", email));
 		JSONObject json = jsonParser.getJSONFromUrl(getPositionURL, params);
 		return json;
 	}
-	public JSONObject getAllFriends(String email) {
+	public static JSONObject getAllFriends(String email) {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", getAllFriends_tag));
 		params.add(new BasicNameValuePair("email", email));
 		JSONObject json = jsonParser.getJSONFromUrl(getAllFriendsURL, params);
 		return json;
 	}
-	public JSONObject addFriend(String email, String friendName) {
+	public static JSONObject addFriend(String email, String friendName) {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", addOrDelFriend_tag));
 		params.add(new BasicNameValuePair("email", email));
@@ -204,7 +281,7 @@ public class UserFunctions {
 		JSONObject json = jsonParser.getJSONFromUrl(addOrDelFriendURL, params);
 		return json;
 	}
-	public JSONObject delFriend(String email, String friendName) {
+	public static JSONObject delFriend(String email, String friendName) {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", addOrDelFriend_tag));
 		params.add(new BasicNameValuePair("email", email));
@@ -213,7 +290,7 @@ public class UserFunctions {
 		JSONObject json = jsonParser.getJSONFromUrl(addOrDelFriendURL, params);
 		return json;
 	}
-	public JSONObject invotefriends(String email) {
+	public static JSONObject invotefriends(String email) {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", invotefriends_tag));
 		params.add(new BasicNameValuePair("email", email));
@@ -226,7 +303,7 @@ public class UserFunctions {
 	 * @param email
 	 * @param password
 	 * */
-	public JSONObject registerUser(String name, String email, String password){
+	public static JSONObject registerUser(String name, String email, String password){
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", register_tag));
@@ -243,7 +320,7 @@ public class UserFunctions {
 	/**
 	 * Function get Login status
 	 * */
-	public boolean isUserLoggedIn(Context context){
+	public static boolean isUserLoggedIn(Context context){
 		DatabaseHandler db = new DatabaseHandler(context);
 		int count = db.getRowCount();
 		if(count > 0){
@@ -256,7 +333,7 @@ public class UserFunctions {
 	/**
 	 * Function get login user name
 	 * */
-	public String getUserName(Context context) {
+	public static String getUserName(Context context) {
 		DatabaseHandler db = new DatabaseHandler(context);
 		String loginName = db.getLoginUserName();
 		return loginName;
@@ -266,7 +343,7 @@ public class UserFunctions {
 	 * Function to logout user
 	 * Reset Database
 	 * */
-	public boolean logoutUser(Context context){
+	public static boolean logoutUser(Context context){
 		DatabaseHandler db = new DatabaseHandler(context);
 		db.resetTables();
 		return true;

@@ -11,12 +11,13 @@
     <string name="remember_password">记住密码</string>
     <string name="auto_login">自动登录</string>
     <string name="login">登录</string>
+    <string name="exit">退出</string>
     
     <string name="user_login">用户登录</string>
     <string name="login_cleanHistory">清空记录</string>
     <string name="sure">确定</string>
     
-    <string name="zkbycy">梦园</string>
+    <string name="zkbycy">梦园 - 属于我们自已的绿色菜园</string>
     
     <!--  -->
     <string name="main_notification">梦园通知</string>
@@ -24,6 +25,8 @@
     <string name="main_all_plant">现有种菜</string>
     <string name="main_week_offer">本周供菜</string>
     <string name="main_reserve_offer">预定配菜</string>
+    <string name="main_today_offer">今日取菜</string>
+    <string name="main_package_inf">套餐信息</string>
     <string name="main_payment_query">缴费查询</string>
     <string name="main_unsubscribe">会员退订</string>
     <string name="main_setup_admin">设置管理</string>
@@ -51,5 +54,7 @@
     <string name="unsubscribe_prompt">温馨提示：退订申请一经提交，您将不能再选菜，帐户到您当月取菜结束后将自动进入未激活状态！</string>
 	<string name="reserve_offer_prompt">预订说明：\n1. 预订时间："预订配菜"需提前6周选择配菜,过期将不允许修改,每周起始日为星期天，结束为星期六；\n2. 新加用户：新激活用户需在下周才具有选择配菜权限,没有自选菜期间均由菜地统一配菜；\n3. 更改配菜：选择需要的配菜->点击“提交”后提示"更新成功!"即已完成；\n4. 可选配菜：可选配菜为本周我们的计划种菜，我们的计划种菜为 6 叶菜/周，瓜果,豆类标准为 5 种/周,不间断；\n5. 预订提示：我们将依据您提交的配菜组合进行移栽，因天气、生长周期等多方面不可抗拒的因素影响，我们不能保证送菜时均能按配菜清单配送，我们只能努力达到。</string>
 	
+	<string name="package_prompt">注意事项：\n1. “套餐设置”为方便会员依据家庭的实际需求来更改套餐类型，任何会员均可随时更改，但更改套餐生效需在下一月取菜开始；\n2. “未激活”的用户可以随时更改套餐，更改后的套餐类型马上生效，一经短信确认激活后将按第“1”条操作；\n3. 因菜地青菜需较长生长时间，且菜地供菜标准容量有限制，因此修改套餐申请不是随时可以满足，一般由标准A更改为B或C可以保证同意，但由标准C变更为B或A则需根据当前菜地的总供菜量而定，并不能保证有相应名额；\n4. 因“套餐更改”直接关联到您“预订配菜”的选菜功能，因此“修改套餐”是不可逆操作，一经提交，个人将无法取消修改申请，请各位会员慎重提交；\n5. “套餐更改”直接影响着菜地的种菜数据，一经发现会员恶意调换，梦园有权直接删除会员资格。</string>
 
+	
 </resources>

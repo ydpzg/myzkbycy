@@ -10,7 +10,6 @@ import android.app.Application;
  * 
  * @ClassName MyApplication.java
  * @Description 自定义Application
- * @author Derek zhang dzhang@xtremeprog.com
  * @date 2013-1-9
  *
  */

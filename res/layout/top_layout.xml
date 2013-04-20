@@ -26,8 +26,9 @@
         android:gravity="center"
         android:singleLine="true"
         android:text=""
+        android:textScaleX="0.9"
         android:textColor="@color/white"
-        android:textSize="20dp" />
+        android:textSize="18sp" />
 
     
     <Button

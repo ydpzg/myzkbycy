@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_weight="1"
-        android:background="@drawable/visio_home_bg" >
+        android:background="#DDDDDD" >
     </LinearLayout>
 
     <include

@@ -13,7 +13,6 @@ import android.content.SharedPreferences.Editor;
 /**
  * @ClassName HistroyUserPreferences.java
  * @Description 保存历史用户,并记录有无记住密码
- * @author Derek zhang dzhang@xtremeprog.com
  * @date 2013-1-10
  * 
  */
@@ -50,6 +49,9 @@ public class HistroyUserPreferences {
 		Editor edit = sharedPre.edit();
 		edit.putString(userName, password);
 		edit.commit();
+	}
+	public String getHistoryPW(String userName) {
+		return sharedPre.getString(userName, "");
 	}
 
 	/**

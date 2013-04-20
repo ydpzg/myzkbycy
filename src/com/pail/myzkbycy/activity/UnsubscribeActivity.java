@@ -12,12 +12,14 @@ import org.json.JSONObject;
 
 import com.pail.myzkbycy.BaseActivity;
 import com.pail.myzkbycy.R;
+import com.pail.myzkbycy.activity.NotificationActivity.addOrDelFriendFromURL;
 import com.pail.myzkbycy.adapter.AllPlantAdapter;
 import com.pail.myzkbycy.bean.NotificationData;
 import com.pail.myzkbycy.bean.Plant_Detail;
 import com.pail.myzkbycy.bean.UserInfData;
 import com.pail.myzkbycy.constants.Constant;
 import com.pail.myzkbycy.control.HistroyUserPreferences;
+import com.pail.myzkbycy.control.LoginUserPreferences;
 import com.pail.myzkbycy.lib.UserFunctions;
 import com.pail.myzkbycy.lib.UserModel;
 import com.pail.myzkbycy.util.DialogUtil;
@@ -64,8 +66,10 @@ public class UnsubscribeActivity extends BaseActivity {
 
 	private ProgressDialog pDialog;
 	private JSONObject json;
-	private String userActiveValue = "0";
+	private String activeStatusValue = "0";
+	private String userStatusValue = "0";
 	private Button unsubscribeBtn;
+	private String loginUser;
 //	private Plant_Detail[] plant_Details;
 //	private ListView listView;
 //	private List<Map<String, Object>> listData;
@@ -99,7 +103,13 @@ public class UnsubscribeActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		new getUserActiveFromURL().execute("");
+		if(NetworkUtil.getInstance().isNetworkGood(UnsubscribeActivity.this)){
+			new getUserActiveFromURL().execute("");
+		} else {
+			DialogUtil.getInstance().showTipDialog(UnsubscribeActivity.this,
+					 "网络连接不正常，请检查");
+		}
+		
 	}
 
 	@Override
@@ -109,6 +119,8 @@ public class UnsubscribeActivity extends BaseActivity {
 		setCenterView(R.layout.unsubscribe_layout);
 		setTopText(getString(R.string.main_unsubscribe));
 		setBottomVisable(View.GONE);
+		
+		loginUser = LoginUserPreferences.getInstance(this).getLoginUser();
 		
 		unsubscribeBtn = (Button) findViewById(R.id.unsubscribeBtn); 
 		unsubscribeBtn.setOnClickListener(this);
@@ -126,7 +138,7 @@ public class UnsubscribeActivity extends BaseActivity {
 		super.onClick(v);
 		if(v == unsubscribeBtn) {
 			String tempStr = "";
-			if(userActiveValue.equals("N")) {
+			if(activeStatusValue.equals("N")) {
 				tempStr = "确定要重新订菜吗？此操作不能撤销！";
 			} else {
 				tempStr = "确定要会员退订吗？此操作不能撤销！";
@@ -140,7 +152,7 @@ public class UnsubscribeActivity extends BaseActivity {
 					DialogUtil.dismissDialog();
 				}
 			};
-			DialogUtil.showTipDialog(UnsubscribeActivity.this, tempStr, onClickListener, "确定");
+			DialogUtil.showTip2Dialog(UnsubscribeActivity.this, tempStr, onClickListener);
 		}
 	}
 
@@ -151,21 +163,21 @@ public class UnsubscribeActivity extends BaseActivity {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
 			pDialog = UserFunctions.createProgressDialog(UnsubscribeActivity.this,
-					"后台忙碌中，请稍后...");
+					"数据处理中，请稍候...");
 		}
 
 		@Override
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
-			UserFunctions userFunction = new UserFunctions();
 			Message msg = new Message();
 			Bundle data = new Bundle();
-			JSONObject json = userFunction.getUnsubscribe("13760625015", "getUserActive", userActiveValue);
+			JSONObject json = UserFunctions.getInstance().getUnsubscribe(loginUser, "getUserActive", activeStatusValue);
 			if (json == null) {
 				return "failConnection";
 			}
 			try {
-				userActiveValue = json.getString("active_status").toString();
+				activeStatusValue = json.getString("active_status").toString();
+				userStatusValue = json.getString("user_status").toString();
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -182,10 +194,15 @@ public class UnsubscribeActivity extends BaseActivity {
 				DialogUtil.getInstance().showTipDialog(UnsubscribeActivity.this,
 						"无法连接上服务器");
 			} else {
-				if (userActiveValue.equals("Y")) {
+				if (activeStatusValue.equals("Y")) {
 					unsubscribeBtn.setText("会员退订");
-				} else if (userActiveValue.equals("N")) {
-					unsubscribeBtn.setText("重新订菜");
+				} else if (activeStatusValue.equals("N")) {
+					if(userStatusValue.equals("T")) {
+						unsubscribeBtn.setText("重新订菜");
+					} else {
+						unsubscribeBtn.setText("未激活");
+						unsubscribeBtn.setClickable(false);
+					}
 				}
 
 			}
@@ -205,10 +222,9 @@ public class UnsubscribeActivity extends BaseActivity {
 		@Override
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
-			UserFunctions userFunction = new UserFunctions();
 			Message msg = new Message();
 			Bundle data = new Bundle();
-			JSONObject json = userFunction.getUnsubscribe("13760625015", "cancel", userActiveValue);
+			JSONObject json = UserFunctions.getInstance().getUnsubscribe(loginUser, "cancel", activeStatusValue);
 			if (json == null) {
 				return "failConnection";
 			}

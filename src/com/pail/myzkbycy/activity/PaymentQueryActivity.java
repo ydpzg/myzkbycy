@@ -12,14 +12,17 @@ import org.json.JSONObject;
 
 import com.pail.myzkbycy.BaseActivity;
 import com.pail.myzkbycy.R;
+import com.pail.myzkbycy.activity.NotificationActivity.addOrDelFriendFromURL;
 import com.pail.myzkbycy.adapter.AllPlantAdapter;
 import com.pail.myzkbycy.adapter.PaymentQueryAdapter;
 import com.pail.myzkbycy.bean.NotificationData;
+import com.pail.myzkbycy.bean.PaymentDetail;
 import com.pail.myzkbycy.bean.Payment_Detail;
 import com.pail.myzkbycy.bean.Plant_Detail;
 import com.pail.myzkbycy.bean.UserInfData;
 import com.pail.myzkbycy.constants.Constant;
 import com.pail.myzkbycy.control.HistroyUserPreferences;
+import com.pail.myzkbycy.control.LoginUserPreferences;
 import com.pail.myzkbycy.lib.UserFunctions;
 import com.pail.myzkbycy.lib.UserModel;
 import com.pail.myzkbycy.util.DialogUtil;
@@ -72,7 +75,7 @@ public class PaymentQueryActivity extends BaseActivity {
 
 	private ProgressDialog pDialog;
 	private JSONObject json;
-	private Payment_Detail[] payment_Details;
+	private PaymentDetail[] paymentDetails;
 	private ListView listView;
 	private List<Map<String, Object>> listData;
 	private PaymentQueryAdapter paymentQueryAdapter;
@@ -80,7 +83,8 @@ public class PaymentQueryActivity extends BaseActivity {
 	private int displayWidth;
 	private int displayHeight;
 	private int list_child_item_height;
-	// private int isClickInx = -1;
+	private int isClickInx = 0;
+	private String loginUser;
 
 	Handler handler = new Handler(new Handler.Callback() {
 
@@ -96,7 +100,12 @@ public class PaymentQueryActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		 new addOrDelFriendFromURL().execute("");
+		if(NetworkUtil.getInstance().isNetworkGood(PaymentQueryActivity.this)){
+			new addOrDelFriendFromURL().execute("");
+		} else {
+			DialogUtil.getInstance().showTipDialog(PaymentQueryActivity.this,
+					 "网络连接不正常，请检查");
+		}
 	}
 
 	@Override
@@ -107,6 +116,8 @@ public class PaymentQueryActivity extends BaseActivity {
 		setTopText("缴费查询");
 		setBottomVisable(View.GONE);
 
+		loginUser = LoginUserPreferences.getInstance(this).getLoginUser();
+		
 		Display display = getWindowManager().getDefaultDisplay();
 
 		displayWidth = display.getWidth();
@@ -117,49 +128,74 @@ public class PaymentQueryActivity extends BaseActivity {
 		listView.setAdapter(paymentQueryAdapter);
 		
         list_child_item_height = 0;
-
-		listView.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				switch (event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					actionY = event.getY();
-					break;
-
-				default:
-					break;
-				}
-				return false;
-			}
-		});
-		listView.setOnItemClickListener(new OnItemClickListener() {
+        
+//		listView.setOnItemClickListener(new OnItemClickListener() {
+//
+//			@Override
+//			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+//					long arg3) {
+//				// TODO Auto-generated method stub
+//				PaymentShowDialog selectDialog = new PaymentShowDialog(PaymentQueryActivity.this, R.style.dialog);//创建Dialog并设置样式主题
+//				Window win = selectDialog.getWindow();
+//				android.view.WindowManager.LayoutParams params = new android.view.WindowManager.LayoutParams();
+//				params.x = 0;//设置x坐标
+//				Log.i("aaa", ListViewUtil.getListViewHeightBasedOnChildren(listView) + "");
+////				View listItem = paymentQueryAdapter.getView(0, null, listView);
+////		        listItem.measure(0, 0); // 计算子项View 的宽高
+//		        list_child_item_height = arg1.getMeasuredHeight() + 1;
+//				params.y = (int) (-displayHeight / 2 + list_child_item_height * 2 + actionY);//设置y坐标
+//				win.setAttributes(params);
+//				selectDialog.setCanceledOnTouchOutside(true);//设置点击Dialog外部任意区域关闭Dialog
+//				selectDialog.show();
+//				TextView effective_time_TV = (TextView) selectDialog.findViewById(R.id.effective_time_TV);
+//				effective_time_TV.setText(payment_Details[arg2].getEffective_time());
+//				TextView payment_way_TV = (TextView) selectDialog.findViewById(R.id.payment_way_TV);
+//				payment_way_TV.setText(payment_Details[arg2].getPayment_way());
+//
+//			}
+//		});
+        listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
-				Log.i("test", arg2 + "  " + actionY);
-				PaymentShowDialog selectDialog = new PaymentShowDialog(PaymentQueryActivity.this, R.style.dialog);//创建Dialog并设置样式主题
-				Window win = selectDialog.getWindow();
-				android.view.WindowManager.LayoutParams params = new android.view.WindowManager.LayoutParams();
-				params.x = 0;//设置x坐标
-				Log.i("aaa", ListViewUtil.getListViewHeightBasedOnChildren(listView) + "");
-//				View listItem = paymentQueryAdapter.getView(0, null, listView);
-//		        listItem.measure(0, 0); // 计算子项View 的宽高
-		        list_child_item_height = arg1.getMeasuredHeight() + 1;
-				params.y = (int) (-displayHeight / 2 + list_child_item_height * 2 + actionY);//设置y坐标
-				win.setAttributes(params);
-				selectDialog.setCanceledOnTouchOutside(true);//设置点击Dialog外部任意区域关闭Dialog
-				selectDialog.show();
-				TextView effective_time_TV = (TextView) selectDialog.findViewById(R.id.effective_time_TV);
-				effective_time_TV.setText(payment_Details[arg2].getEffective_time());
-				TextView payment_way_TV = (TextView) selectDialog.findViewById(R.id.payment_way_TV);
-				payment_way_TV.setText(payment_Details[arg2].getPayment_way());
-
+				Log.i("bbbb", arg2 + "");
+				if (listData != null) {
+					if (isClickInx == arg2) {
+						listData.get(arg2).put("isClick", false);
+						isClickInx = -1;
+					} else {
+						if(isClickInx != -1) {
+							listData.get(isClickInx).put("isClick", false);
+						} else {
+						}
+						listData.get(arg2).put("isClick", true);
+						isClickInx = arg2;
+					}	
+					paymentQueryAdapter.notifyDataSetChanged();
+				}
 			}
 		});
+//		listView.setOnScrollListener(new OnScrollListener() {
+//			
+//			@Override
+//			public void onScrollStateChanged(AbsListView view, int scrollState) {
+//				// TODO Auto-generated method stub
+//				if(isClickInx != -1) {
+//					listData.get(isClickInx).put("isClick", false);
+//					paymentQueryAdapter.notifyDataSetChanged();
+//					isClickInx = -1;
+//				}
+//			}
+//			
+//			@Override
+//			public void onScroll(AbsListView view, int firstVisibleItem,
+//					int visibleItemCount, int totalItemCount) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		});
 	}
 
 	@Override
@@ -181,56 +217,68 @@ public class PaymentQueryActivity extends BaseActivity {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
 			pDialog = UserFunctions.createProgressDialog(
-					PaymentQueryActivity.this, "后台忙碌中，请稍后...");
+					PaymentQueryActivity.this, "数据处理中，请稍候...");
 		}
 
 		@Override
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
-			UserFunctions userFunction = new UserFunctions();
 			Message msg = new Message();
 			Bundle data = new Bundle();
-			// JSONObject json = userFunction.getWeekOffer();
-			// if (json == null) {
-			// return "failConnection";
-			// }
-			// plant_Details = new Plant_Detail[json.length()];
-			// for (int i = 0; i < json.length(); i++) {
-			// try {
-			// plant_Details[i] = new Plant_Detail();
-			// // JSONObject tempJsonObject =
-			// // json.getJSONObject(json.names()
-			// // .get(i).toString());
-			// JSONObject tempJsonObject = json.getJSONObject("n"
-			// + (json.length() - 1 - i));
-			// plant_Details[i].setPlant_id(tempJsonObject.getString(
-			// "plant_id").toString());
-			// plant_Details[i].setPlant_time(tempJsonObject.getString(
-			// "plant_time").toString());
-			// plant_Details[i].setPlant_name(tempJsonObject.getString(
-			// "plant_name").toString());
-			// plant_Details[i].setDruguse_data(tempJsonObject.getString(
-			// "druguse").toString());
-			// plant_Details[i].setFertilizer_data(tempJsonObject
-			// .getString("fertilizer").toString());
-			// plant_Details[i].setCook_web(tempJsonObject
-			// .getString("web_link").toString());
-			// plant_Details[i].setClick(false);
-			// Log.i("json", plant_Details[i].toString());
-			// } catch (JSONException e) {
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// }
-			// }
-			payment_Details = new Payment_Detail[5];
-			for (int i = 0; i < 5; i++) {
-				payment_Details[i] = new Payment_Detail(); 
-				payment_Details[i].setPayment_time("2013-02-25");
-				payment_Details[i].setPayment_account("200");
-				payment_Details[i].setEffective_time("2013-02-25 ~ 2013-03-24");
-				payment_Details[i].setPayment_way("cash");
+			if(!NetworkUtil.getInstance().isNetworkGood(PaymentQueryActivity.this)){
+				 return "failConnection";
 			}
-			listData = getData(payment_Details);
+			Log.i("connect", NetworkUtil.getInstance().isNetworkGood(PaymentQueryActivity.this) + "");
+			JSONObject json = UserFunctions.getInstance().getPaymentInf(loginUser);
+			Log.i("vvv", "ddf");
+			if (json == null) {
+			    return "failConnection";
+			}
+			JSONObject tempJO;
+			try {
+				tempJO = json.getJSONObject("n0");
+				if(tempJO.getString("success").toString().equals("0")) {
+					return "null";
+				}
+			} catch (JSONException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			paymentDetails = new PaymentDetail[json.length()];
+			for (int i = 0; i < json.length(); i++) {
+				try {
+					paymentDetails[i] = new PaymentDetail();
+					// JSONObject tempJsonObject =
+					// json.getJSONObject(json.names()
+					// .get(i).toString());
+					JSONObject tempJsonObject = json.getJSONObject("n"
+							+ (json.length() - 1 - i));
+					paymentDetails[i].setTime(tempJsonObject.getString(
+							"payment_time").toString());
+					paymentDetails[i].setId(tempJsonObject.getString(
+							"payment_id").toString());
+					paymentDetails[i].setBegin(tempJsonObject.getString(
+							"payment_begin").toString());
+					paymentDetails[i].setEnd(tempJsonObject.getString(
+							"payment_end").toString());
+					paymentDetails[i].setNumber(tempJsonObject
+							.getString("payment_number").toString());
+					Log.i("bbb", paymentDetails[i].toString());
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+//			payment_Details = new Payment_Detail[5];
+//			for (int i = 0; i < 5; i++) {
+//				payment_Details[i] = new Payment_Detail(); 
+//				payment_Details[i].setPayment_time("2013-02-25");
+//				payment_Details[i].setPayment_account("200");
+//				payment_Details[i].setEffective_time("2013-02-25 ~ 2013-03-24");
+//				payment_Details[i].setPayment_way("cash");
+//			}
+			listData = getData(paymentDetails);
 			paymentQueryAdapter.setListItem(listData);
 			handler.sendEmptyMessage(0);
 			return "successConnection";
@@ -241,10 +289,10 @@ public class PaymentQueryActivity extends BaseActivity {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 			pDialog.dismiss();
-			// if (result.equals("failConnection")) {
-			// DialogUtil.getInstance().showTipDialog(AllPlantActivity.this,
-			// "无法连接上服务器");
-			// } else {
+			 if (result.equals("failConnection")) {
+				 DialogUtil.getInstance().showTipDialog(PaymentQueryActivity.this,
+				 "无法连接上服务器");
+			 } else {
 			// true_name_TV.setText(userInfData.getTrue_name());
 			// index_phone_TV.setText(userInfData.getIndex_phone());
 			// if (userInfData.getTemp_user_active().equals("Y")) {
@@ -266,7 +314,7 @@ public class PaymentQueryActivity extends BaseActivity {
 			// pickup_place_TV.setText("32栋前（英东楼后，艺术设计馆旁）");
 			// pickup_time_TV.setText("周一至周五（11:20-13:30）");
 			//
-			// }
+			 }
 		}
 	}
 
@@ -299,16 +347,20 @@ public class PaymentQueryActivity extends BaseActivity {
 	//
 	// }
 
-	public List<Map<String, Object>> getData(Payment_Detail[] payment_Details) {
+	public List<Map<String, Object>> getData(PaymentDetail[] payment_Details) {
 		List<Map<String, Object>> lData = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map;
 		for (int i = 0; i < payment_Details.length; i++) {
 			map = new HashMap<String, Object>();
-			map.put("payment_time", payment_Details[i].getPayment_time());
-			map.put("payment_account", payment_Details[i].getPayment_account());
-			map.put("effective_time", payment_Details[i].getEffective_time());
-			map.put("payment_way", payment_Details[i].getPayment_way());
-
+			map.put("payment_time", payment_Details[i].getTime());
+			map.put("payment_account", payment_Details[i].getNumber());
+			map.put("effective_time", payment_Details[i].getBegin() + " ~ " + payment_Details[i].getEnd());
+			map.put("payment_way", "");
+			if(i == 0) {
+				map.put("isClick", true);
+			} else {
+				map.put("isClick", false);
+			}
 			lData.add(map);
 		}
 

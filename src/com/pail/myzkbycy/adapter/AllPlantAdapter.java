@@ -47,6 +47,7 @@ public class AllPlantAdapter extends BaseAdapter {
 		slideUpAnimation = AnimationUtils.loadAnimation(context,
 				R.anim.slide_up);
 		defaultView = layoutInflater.inflate(R.layout.all_plant_list, null);
+		
 	}
 
 	@Override
@@ -84,39 +85,30 @@ public class AllPlantAdapter extends BaseAdapter {
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		if (position != listItem.size() - 1) {
-			viewHolder.item_inx.setText(String.valueOf(position + 1));
-			viewHolder.item_name.setText(listItem.get(position).get("item_name")
-					.toString());
-			viewHolder.item_date.setText(listItem.get(position).get("item_date")
-					.toString());
-			boolean isClick = (Boolean) listItem.get(position).get("isClick");
-			if (isClick) {
-				Log.i("test", "isclick=" + position);
-				viewHolder.grow_btn.setVisibility(View.VISIBLE);
-				viewHolder.nutrition_btn.setVisibility(View.VISIBLE);
-				viewHolder.cook_btn.setVisibility(View.VISIBLE);
-				viewHolder.below_LL.startAnimation(slideDownAnimation);
-				Log.i("test", "onclick=" + isClick);
-			} else {
-				viewHolder.grow_btn.setVisibility(View.GONE);
-				viewHolder.nutrition_btn.setVisibility(View.GONE);
-				viewHolder.cook_btn.setVisibility(View.GONE);
-				Log.i("test", "onclick=" + isClick);
-			}
-			viewHolder.nutrition_btn.setOnClickListener(onClickListener);
-			viewHolder.grow_btn.setOnClickListener(onClickListener);
-			viewHolder.cook_btn.setOnClickListener(onClickListener);
-			viewHolder.nutrition_btn.setTag(listItem.get(position).get("item_id"));
-			viewHolder.cook_btn.setTag(position);
+		viewHolder.item_inx.setText(String.valueOf(position + 1));
+		viewHolder.item_name.setText(listItem.get(position).get("item_name")
+				.toString());
+		viewHolder.item_date.setText(listItem.get(position).get("item_date")
+				.toString());
+		boolean isClick = (Boolean) listItem.get(position).get("isClick");
+		if (isClick) {
+			Log.i("test", "isclick=" + position);
+			viewHolder.grow_btn.setVisibility(View.VISIBLE);
+			viewHolder.nutrition_btn.setVisibility(View.VISIBLE);
+			viewHolder.cook_btn.setVisibility(View.VISIBLE);
+			viewHolder.below_LL.startAnimation(slideDownAnimation);
+			Log.i("test", "onclick=" + isClick);
 		} else {
-			viewHolder.item_inx.setText("");
-			viewHolder.item_name.setText("");
-			viewHolder.item_date.setText("");
 			viewHolder.grow_btn.setVisibility(View.GONE);
 			viewHolder.nutrition_btn.setVisibility(View.GONE);
 			viewHolder.cook_btn.setVisibility(View.GONE);
+			Log.i("test", "onclick=" + isClick);
 		}
+		viewHolder.nutrition_btn.setOnClickListener(onClickListener);
+		viewHolder.grow_btn.setOnClickListener(onClickListener);
+		viewHolder.cook_btn.setOnClickListener(onClickListener);
+		viewHolder.nutrition_btn.setTag(listItem.get(position).get("item_id"));
+		viewHolder.cook_btn.setTag(position);
 		return convertView;
 	}
 
@@ -134,14 +126,12 @@ public class AllPlantAdapter extends BaseAdapter {
 				context.startActivity(intent);
 				break;
 			case R.id.cook_btn:
-				intent = new Intent(context, CookMethodActivity.class);
-				intent.putExtra("web_link",
-						listItem.get(Integer.valueOf(v.getTag().toString()))
-								.get("web_link").toString());
-				context.startActivity(intent);
-//				Uri uriUrl = Uri.parse("http://github.com/jfeinstein10/slidingmenu");
-//				Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl); 
-//				context.startActivity(launchBrowser);
+				 Uri uriUrl =
+				 Uri.parse(listItem.get(Integer.valueOf(v.getTag().toString()))
+							.get("web_link").toString());
+				 Intent launchBrowser = new Intent(Intent.ACTION_VIEW,
+				 uriUrl);
+				 context.startActivity(launchBrowser);
 				break;
 			default:
 				break;

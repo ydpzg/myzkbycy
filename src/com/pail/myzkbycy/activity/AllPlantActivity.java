@@ -135,25 +135,25 @@ public class AllPlantActivity extends BaseActivity {
 				}
 			}
 		});
-		listView.setOnScrollListener(new OnScrollListener() {
-			
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				// TODO Auto-generated method stub
-				if(isClickInx != -1) {
-					listData.get(isClickInx).put("isClick", false);
-					allPlantAdapter.notifyDataSetChanged();
-					isClickInx = -1;
-				}
-			}
-			
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+//		listView.setOnScrollListener(new OnScrollListener() {
+//			
+//			@Override
+//			public void onScrollStateChanged(AbsListView view, int scrollState) {
+//				// TODO Auto-generated method stub
+//				if(isClickInx != -1) {
+//					listData.get(isClickInx).put("isClick", false);
+//					allPlantAdapter.notifyDataSetChanged();
+//					isClickInx = -1;
+//				}
+//			}
+//			
+//			@Override
+//			public void onScroll(AbsListView view, int firstVisibleItem,
+//					int visibleItemCount, int totalItemCount) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		});
 		
 		
 		ArrayList<Object> ddArrayList = DaoCenter.getInstance().getDao()
@@ -211,16 +211,15 @@ public class AllPlantActivity extends BaseActivity {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
 			pDialog = UserFunctions.createProgressDialog(AllPlantActivity.this,
-					"后台忙碌中，请稍后...");
+					"数据处理中，请稍候...");
 		}
 
 		@Override
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
-			UserFunctions userFunction = new UserFunctions();
 			Message msg = new Message();
 			Bundle data = new Bundle();
-			JSONObject json = userFunction.getAllPlant();
+			JSONObject json = UserFunctions.getInstance().getAllPlant();
 			if (json == null) {
 				return "failConnection";
 			}
@@ -264,63 +263,9 @@ public class AllPlantActivity extends BaseActivity {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 			pDialog.dismiss();
-			// if (result.equals("failConnection")) {
-			// DialogUtil.getInstance().showTipDialog(AllPlantActivity.this,
-			// "无法连接上服务器");
-			// } else {
-			// true_name_TV.setText(userInfData.getTrue_name());
-			// index_phone_TV.setText(userInfData.getIndex_phone());
-			// if (userInfData.getTemp_user_active().equals("Y")) {
-			// user_active_TV.setText("已激活");
-			// } else if (userInfData.getTemp_user_active().equals("N")) {
-			// user_active_TV.setText("未激活");
-			// }
-			// if (userInfData.getTemp_user_status().equals("Y")) {
-			// user_status_TV.setText("管理员");
-			// } else if (userInfData.getTemp_user_status().equals("N")) {
-			// user_status_TV.setText("注册会员");
-			// }
-			// // user_status_TV.setText(userInfData.getIndex_phone());
-			// set_price_TV.setText(userInfData.getIndex_set() + "型 "
-			// + userInfData.getIndex_price() + "元/月");
-			// middle_number_TV.setText(userInfData.getIndex_middle_number());
-			// users_qq_TV.setText(userInfData.getTemp_qq());
-			// users_feixin_TV.setText(userInfData.getTemp_feixin());
-			// pickup_place_TV.setText("32栋前（英东楼后，艺术设计馆旁）");
-			// pickup_time_TV.setText("周一至周五（11:20-13:30）");
-			//
-			// }
 		}
 	}
 
-	// public void addSonViewToLayout(NotificationData notificationData) {
-	// TextView textView1 = new TextView(this);
-	// LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(
-	// LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-	// textView1.setGravity(Gravity.CENTER_HORIZONTAL);
-	// textView1.setLayoutParams(params1);
-	// textView1.setText(Html.fromHtml(notificationData.getNews_title()));
-	// textView1.setTextColor(getResources().getColor(R.color.black));
-	// parentTextLinearLayout.addView(textView1);
-	//
-	// TextView textView3 = new TextView(this);
-	// LinearLayout.LayoutParams params3 = new LinearLayout.LayoutParams(
-	// LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-	// textView3.setGravity(Gravity.RIGHT);
-	// textView3.setLayoutParams(params3);
-	// textView3.setText(Html.fromHtml(notificationData.getNews_data()));
-	// textView3.setTextColor(getResources().getColor(R.color.black));
-	// parentTextLinearLayout.addView(textView3);
-	//
-	// TextView textView2 = new TextView(this);
-	// LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(
-	// LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-	// textView2.setLayoutParams(params2);
-	// textView2.setText(Html.fromHtml(notificationData.getNews_content()));
-	// textView2.setTextColor(getResources().getColor(R.color.black));
-	// parentTextLinearLayout.addView(textView2);
-	//
-	// }
 
 	public List<Map<String, Object>> getData(Plant_Detail[] plant_Details) {
 		List<Map<String, Object>> lData = new ArrayList<Map<String, Object>>();
@@ -335,14 +280,6 @@ public class AllPlantActivity extends BaseActivity {
 			
 			lData.add(map);
 		}
-		//多出来一个是为了解决最后一行看不到
-		map = new HashMap<String, Object>();
-		map.put("item_id", "");
-		map.put("item_name", "");
-		map.put("item_date", "");
-		map.put("isClick", false);
-		map.put("web_link", "");
-		lData.add(map);
 
 		return lData;
 	}

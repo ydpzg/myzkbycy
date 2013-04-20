@@ -32,5 +32,11 @@ public class NotificationData extends DataPacket {
 	public void setNews_id(String news_id) {
 		this.news_id = news_id;
 	}
+	@Override
+	public String toString() {
+		return "NotificationData [news_title=" + news_title + ", news_content="
+				+ news_content + ", news_data=" + news_data + ", news_id="
+				+ news_id + "]";
+	}
 
 }
