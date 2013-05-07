@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 import com.pail.myzkbycy.BaseActivity;
 import com.pail.myzkbycy.R;
-import com.pail.myzkbycy.activity.PlantNutrition_backup_Activity.addOrDelFriendFromURL;
+import com.pail.myzkbycy.activity.WeekOfferActivity.addOrDelFriendFromURL;
 import com.pail.myzkbycy.adapter.AllPlantAdapter;
 import com.pail.myzkbycy.bean.NotificationData;
 import com.pail.myzkbycy.bean.PlantInfo;
@@ -22,7 +22,6 @@ import com.pail.myzkbycy.bean.UserInfData;
 import com.pail.myzkbycy.constants.Constant;
 import com.pail.myzkbycy.control.AsynImageLoader;
 import com.pail.myzkbycy.control.HistroyUserPreferences;
-import com.pail.myzkbycy.control.SetPreferences;
 import com.pail.myzkbycy.dao.DaoCenter;
 import com.pail.myzkbycy.lib.UserFunctions;
 import com.pail.myzkbycy.lib.UserModel;
@@ -72,7 +71,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-public class PlantNutritionActivity extends BaseActivity {
+public class PlantNutrition_backup_Activity extends BaseActivity {
 
 	private ProgressDialog pDialog;
 	private JSONObject json;
@@ -95,9 +94,6 @@ public class PlantNutritionActivity extends BaseActivity {
 				Drawable tempDrawable = (Drawable) msg.obj;
 				plant_pic.setBackgroundDrawable(tempDrawable);
 				tip_TV.setVisibility(View.GONE);
-				break;
-			case 2:
-				tip_TV.setText("当前网络不是Wifi网络，不显示图片！");
 				break;
 
 			default:
@@ -131,25 +127,11 @@ public class PlantNutritionActivity extends BaseActivity {
 		plantId = getIntent().getStringExtra("plantId");
 		String classnameString = getIntent().getStringExtra("classname");
 
-		if(classnameString.equals(Constant.ALL_PLANT_ACTIVITY)) {
-			ArrayList<Object> ddArrayList = DaoCenter.getInstance().getDao()
-					.queryOneData("plantinfo", PlantInfo.class, "plantId=" + plantId);
-			if (ddArrayList != null) {
-				PlantInfo plantInfo = (PlantInfo)ddArrayList.get(0);
-				title_TV.setText(plantInfo.getPlantName());
-				content_TV.setText(Html.fromHtml(plantInfo.getPlantContext()));
-				bitmap = FileUtil.getImageFromAssetsFile(this, "pic/" + plantInfo.getPicName() + ".jpg");
-				plant_pic.setImageBitmap(bitmap);
-			} else {
-				Log.i("test", "ddArrayList = null");
-			}
-		} else if(classnameString.equals(Constant.WEEK_OFFER_ACTIVITY)) {
-			if(NetworkUtil.getInstance().isNetworkGood(PlantNutritionActivity.this)){
-				new addOrDelFriendFromURL().execute("");
-			} else {
-				DialogUtil.getInstance().showTipDialog(PlantNutritionActivity.this,
-						 "网络连接不正常，请检查");
-			}
+		if(NetworkUtil.getInstance().isNetworkGood(PlantNutrition_backup_Activity.this)){
+			new addOrDelFriendFromURL().execute("");
+		} else {
+			DialogUtil.getInstance().showTipDialog(PlantNutrition_backup_Activity.this,
+					 "网络连接不正常，请检查");
 		}
 	}
 
@@ -172,7 +154,7 @@ public class PlantNutritionActivity extends BaseActivity {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
 			pDialog = UserFunctions.createProgressDialog(
-					PlantNutritionActivity.this, "数据处理中，请稍候...");
+					PlantNutrition_backup_Activity.this, "数据处理中，请稍候...");
 		}
 
 		@Override
@@ -202,20 +184,13 @@ public class PlantNutritionActivity extends BaseActivity {
 						// TODO Auto-generated method stub
 						Log.i("download", "111");
 						handler.sendEmptyMessage(0);
-//						Drawable tempBitmap = PicUtil
-//								.getcontentPic("http://192.168.1.124/my_zkbycy/upload_pic/" + picId);
-						int picSaveID = SetPreferences.getInstance(PlantNutritionActivity.this).getPicDownload();
-						if(picSaveID == 2 || NetworkUtil.getInstance().isWifiWork(PlantNutritionActivity.this)) {
-							Drawable tempBitmap = PicUtil
-									.getcontentPic("http://www.zkbycy.com/upload_pic/" + picId);
-							Message msg = new Message();
-							msg.obj = tempBitmap;
-							msg.what = 1;
-							handler.sendMessage(msg);
-							Log.i("download", "222");
-						} else {
-							handler.sendEmptyMessage(2);
-						}
+						Drawable tempBitmap = PicUtil
+								.getcontentPic("http://192.168.1.124/my_zkbycy/upload_pic/" + picId);
+						Message msg = new Message();
+						msg.obj = tempBitmap;
+						msg.what = 1;
+						handler.sendMessage(msg);
+						Log.i("download", "222");
 					}
 				}).start();
 			} catch (JSONException e) {
@@ -232,7 +207,7 @@ public class PlantNutritionActivity extends BaseActivity {
 			pDialog.dismiss();
 			if (result.equals("failConnection")) {
 				DialogUtil.getInstance().showTipDialog(
-						PlantNutritionActivity.this, "无法连接上服务器");
+						PlantNutrition_backup_Activity.this, "无法连接上服务器");
 			} else {
 				title_TV.setText(title);
 				content_TV.setText(Html.fromHtml(content));

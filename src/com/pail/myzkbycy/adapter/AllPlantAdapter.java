@@ -6,9 +6,10 @@ import java.util.Map;
 import org.apache.http.cookie.Cookie;
 
 import com.pail.myzkbycy.R;
-import com.pail.myzkbycy.activity.AllPlantActivity;
+import com.pail.myzkbycy.activity.AllPlant_backup_Activity;
 import com.pail.myzkbycy.activity.CookMethodActivity;
 import com.pail.myzkbycy.activity.PlantNutritionActivity;
+import com.pail.myzkbycy.activity.PlantNutrition_backup_Activity;
 
 import android.app.Activity;
 import android.content.ClipData.Item;
@@ -129,6 +130,7 @@ public class AllPlantAdapter extends BaseAdapter {
 				 Uri uriUrl =
 				 Uri.parse(listItem.get(Integer.valueOf(v.getTag().toString()))
 							.get("web_link").toString());
+				
 				 Intent launchBrowser = new Intent(Intent.ACTION_VIEW,
 				 uriUrl);
 				 context.startActivity(launchBrowser);

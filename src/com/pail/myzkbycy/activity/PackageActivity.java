@@ -77,7 +77,7 @@ public class PackageActivity extends BaseActivity {
 	private ProgressDialog pDialog;
 	private String loginUser;
 	private String temp_setmealname;
-	private String stateStr;
+	private String stateStr, setMealId;
 	private ArrayList<SetMealModel> setMealModels; 
 	private ArrayList<CheckBox> checkBoxs; 
 	
@@ -151,6 +151,21 @@ public class PackageActivity extends BaseActivity {
 		Log.i("inx", inx + "");
 		return inx;
 	}
+
+	private int transSetMealID(String str) {
+		int inx = 1;
+		int i;
+		for(i = 0;i < setMealModels.size();i++) {
+			if(setMealModels.get(i).getTemp_setid().equals(str)) {
+				break;
+			}
+		}
+		if(i < setMealModels.size()) {
+			inx = i + 1;
+		}
+		return inx;
+	}
+	
 	
 	@Override
 	protected void initListener() {
@@ -219,7 +234,8 @@ public class PackageActivity extends BaseActivity {
 				
 				temp_setmealname = json.getString("temp_setmealname").toString();
 				stateStr = json.getString("stateStr").toString();
-				serverPackageInx = checkSetmeal(temp_setmealname);
+				setMealId = json.getString("temp_user_setmealID").toString();
+				serverPackageInx = transSetMealID(setMealId);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -236,18 +252,23 @@ public class PackageActivity extends BaseActivity {
 				DialogUtil.getInstance().showTipDialog(PackageActivity.this,
 						"无法连接上服务器");
 			} else {
-				addSetMealViews();
+				if(setmeal_LL.getChildCount() == 0) {
+					addSetMealViews();
+				}
 				checkSet(serverPackageInx);
 				serverState_TV.setText(stateStr);
 				packageChooseInx = serverPackageInx;
 				submit_btn.setVisibility(View.VISIBLE);
-				if(stateStr.startsWith("已")) {
+				if(stateStr.startsWith("已") || stateStr.startsWith("套餐更改已通过审核")) {
 					submit_btn.setVisibility(View.GONE);
 				} else {
 					submit_btn.setVisibility(View.VISIBLE);
 				}
 			}
 		}
+	}
+	public void removeSelMealViews() {
+		setmeal_LL.removeAllViews();
 	}
 	public void addSetMealViews() {
 		checkBoxs = new ArrayList<CheckBox>();
@@ -305,13 +326,13 @@ public class PackageActivity extends BaseActivity {
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					Log.i("click" , Integer.valueOf(v.getTag().toString()) + "");
-					if(packageChooseInx != Integer.valueOf(v.getTag().toString()) - 1) {
+					if(packageChooseInx != Integer.valueOf(v.getTag().toString()) + 1) {
 						for(int j = 0;j < checkBoxs.size();j++) {
 							checkBoxs.get(j).setChecked(false);
 						}
 						checkBoxs.get(Integer.valueOf(v.getTag().toString())).setChecked(true);
-						packageChooseInx = Integer.valueOf(v.getTag().toString()) - 1;
+						packageChooseInx = Integer.valueOf(v.getTag().toString()) + 1;
+						Log.i("click" , packageChooseInx + "");
 					}
 				}
 			});

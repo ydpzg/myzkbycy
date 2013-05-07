@@ -13,7 +13,6 @@ import android.widget.TextView;
  * 
  * @ClassName TipDialog.java
  * @Description 自定义Dialog，实现一个圆角白色背景一个Textview，一个button的布局。
- * @author Pail dpyu@xtremeprog.com
  * @date 2013-1-15
  *
  */

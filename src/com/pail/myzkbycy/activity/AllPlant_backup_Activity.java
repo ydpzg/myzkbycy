@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import com.pail.myzkbycy.BaseActivity;
 import com.pail.myzkbycy.R;
+import com.pail.myzkbycy.activity.WeekOfferActivity.addOrDelFriendFromURL;
 import com.pail.myzkbycy.adapter.AllPlantAdapter;
 import com.pail.myzkbycy.bean.NotificationData;
 import com.pail.myzkbycy.bean.PlantInfo;
@@ -61,7 +62,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-public class AllPlantActivity extends BaseActivity {
+public class AllPlant_backup_Activity extends BaseActivity {
 
 	private ProgressDialog pDialog;
 	private JSONObject json;
@@ -87,7 +88,12 @@ public class AllPlantActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-//		new addOrDelFriendFromURL().execute("");
+		if(NetworkUtil.getInstance().isNetworkGood(AllPlant_backup_Activity.this)){
+			new addOrDelFriendFromURL().execute("");
+		} else {
+			DialogUtil.getInstance().showTipDialog(AllPlant_backup_Activity.this,
+					 "网络连接不正常，请检查");
+		}
 	}
 
 	@Override
@@ -98,17 +104,6 @@ public class AllPlantActivity extends BaseActivity {
 		setTopText("现有种菜");
 		setBottomVisable(View.GONE);
 
-		setRightButton(R.drawable.button5_home2, View.VISIBLE, new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(AllPlantActivity.this, Gallery3DActivity.class);
-				startActivity(intent);
-				finish();
-			}
-		}, R.string.show3D);
-		
 		listView = (ListView) findViewById(R.id.list);
 		allPlantAdapter = new AllPlantAdapter(this);
 		listView.setAdapter(allPlantAdapter);
@@ -156,39 +151,39 @@ public class AllPlantActivity extends BaseActivity {
 //		});
 		
 		
-		ArrayList<Object> ddArrayList = DaoCenter.getInstance().getDao()
-				.queryAllData("plantinfo", PlantInfo.class);
-		if (ddArrayList != null) {
-			plantInfos = new PlantInfo[ddArrayList.size()];
-			imagesNames = new String[ddArrayList.size()];
-			Log.i("test", "size = " + ddArrayList.size());
-			plant_Details = new Plant_Detail[ddArrayList.size()];
-			for(int i = 0; i < ddArrayList.size();i++) {
-				PlantInfo plantInfo = (PlantInfo)ddArrayList.get(i);
-				plantInfos[i] = plantInfo; 
-				imagesNames[i] = plantInfo.getPicName();
-				
-				plant_Details[i] = new Plant_Detail();
-				// JSONObject tempJsonObject =
-				// json.getJSONObject(json.names()
-				// .get(i).toString());
-				plant_Details[i].setPlant_id(plantInfos[i].getPlantId() + "");
-				plant_Details[i].setPlant_name(plantInfos[i].getPlantName());
-				plant_Details[i].setDruguse_data("123");
-				plant_Details[i].setFertilizer_data("456");
-				plant_Details[i].setClick(false);
-				plant_Details[i].setPlant_time(plantInfos[i].getExpectedTime());
-				plant_Details[i].setCook_web(plantInfos[i].getWebLink());
-				Log.i("json", plant_Details[i].toString());
-			}
-			
-			
-			listData = getData(plant_Details);
-			allPlantAdapter.setListItem(listData);
-			handler.sendEmptyMessage(0);
-		} else {
-			Log.i("test", "ddArrayList = " + "null");
-		}
+//		ArrayList<Object> ddArrayList = DaoCenter.getInstance().getDao()
+//				.queryAllData("plantinfo", PlantInfo.class);
+//		if (ddArrayList != null) {
+//			plantInfos = new PlantInfo[ddArrayList.size()];
+//			imagesNames = new String[ddArrayList.size()];
+//			Log.i("test", "size = " + ddArrayList.size());
+//			plant_Details = new Plant_Detail[ddArrayList.size()];
+//			for(int i = 0; i < ddArrayList.size();i++) {
+//				PlantInfo plantInfo = (PlantInfo)ddArrayList.get(i);
+//				plantInfos[i] = plantInfo; 
+//				imagesNames[i] = plantInfo.getPicName();
+//				
+//				plant_Details[i] = new Plant_Detail();
+//				// JSONObject tempJsonObject =
+//				// json.getJSONObject(json.names()
+//				// .get(i).toString());
+//				plant_Details[i].setPlant_id(plantInfos[i].getPlantId() + "");
+//				plant_Details[i].setPlant_name(plantInfos[i].getPlantName());
+//				plant_Details[i].setDruguse_data("123");
+//				plant_Details[i].setFertilizer_data("456");
+//				plant_Details[i].setClick(false);
+//				plant_Details[i].setPlant_time(plantInfos[i].getExpectedTime());
+//				plant_Details[i].setCook_web("");
+//				Log.i("json", plant_Details[i].toString());
+//			}
+//			
+//			
+//			listData = getData(plant_Details);
+//			allPlantAdapter.setListItem(listData);
+//			handler.sendEmptyMessage(0);
+//		} else {
+//			Log.i("test", "ddArrayList = " + "null");
+//		}
 
 	}
 
@@ -210,7 +205,7 @@ public class AllPlantActivity extends BaseActivity {
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
-			pDialog = UserFunctions.createProgressDialog(AllPlantActivity.this,
+			pDialog = UserFunctions.createProgressDialog(AllPlant_backup_Activity.this,
 					"数据处理中，请稍候...");
 		}
 

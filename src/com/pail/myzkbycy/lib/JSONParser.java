@@ -1,10 +1,5 @@
 package com.pail.myzkbycy.lib;
 
-/**
- * URL: www.androidhive.info
- * twitter: http://twitter.com/ravitamada
- * */
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,8 +63,6 @@ public class JSONParser {
 			}
 			is.close();
 			json = sb.toString();
-			
-			String s = "{'\u6211'}";
 			Log.e("JSON", json);
 		} catch (Exception e) {
 			Log.e("Buffer Error", "Error converting result " + e.toString());
@@ -80,9 +73,7 @@ public class JSONParser {
 		} catch (JSONException e) {
 			Log.e("JSON Parser", "Error parsing data " + e.toString());
 		}
-
 		// return JSON String
 		return jObj;
-
 	}
 }

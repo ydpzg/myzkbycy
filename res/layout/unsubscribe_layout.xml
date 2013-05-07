@@ -24,6 +24,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:textColor="@color/white"
+            android:background="@drawable/button1"
             android:text="会员退订" />
 
         <TextView

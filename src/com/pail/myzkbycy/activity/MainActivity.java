@@ -54,15 +54,15 @@ import android.widget.Toast;
 public class MainActivity extends BaseActivity {
 	private GridView gridView;
 	int[] image_page = new int[] { 
-			R.drawable.visio_home_icon_information,
-			R.drawable.visio_home_icon_me,
-			R.drawable.visio_home_icon_balance,
-			R.drawable.visio_home_icon_order,
-			R.drawable.visio_home_icon_inquires,
-			R.drawable.visio_home_icon_more,
-			R.drawable.visio_home_icon_more,
-			R.drawable.visio_home_icon_reimbursement,
-			R.drawable.visio_home_icon_rechargeable };
+			R.drawable.my_notification,
+			R.drawable.my_user_inf,
+			R.drawable.my_payment_query,
+			R.drawable.my_today_offer,
+			R.drawable.my_week_offer,
+			R.drawable.my_all_plant,
+			R.drawable.my_package_inf,
+			R.drawable.my_unsubscribe,
+			R.drawable.my_setup_admin };
 	int[] name_page = new int[] { 
 			R.string.main_notification,
 			R.string.main_user_inf, 

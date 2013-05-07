@@ -84,11 +84,17 @@ public class UnsubscribeActivity extends BaseActivity {
 			switch (msg.what) {
 			case 0:
 				String successString = (String) msg.obj;
+				
 				if(successString.equals("1")) {
-					Toast.makeText(UnsubscribeActivity.this, "操作成功", Toast.LENGTH_SHORT).show();
+					DialogUtil.showTipDialog(UnsubscribeActivity.this, "操作成功");
+					if(activeStatusValue.equals("Y")) {
+						unsubscribeBtn.setText("退订申请已提交，请等待审核!");
+					} else {
+						unsubscribeBtn.setText("申请已提交，请等待审核!");
+					}
 					unsubscribeBtn.setClickable(false);
 				} else if(successString.equals("0")) {
-					Toast.makeText(UnsubscribeActivity.this, "操作失败", Toast.LENGTH_SHORT).show();
+					DialogUtil.showTipDialog(UnsubscribeActivity.this, "操作失败");
 				}
 				break;
 
@@ -195,7 +201,13 @@ public class UnsubscribeActivity extends BaseActivity {
 						"无法连接上服务器");
 			} else {
 				if (activeStatusValue.equals("Y")) {
-					unsubscribeBtn.setText("会员退订");
+					if(userStatusValue.equals("S")) {
+						unsubscribeBtn.setText("退订申请已提交，请等待审核!");
+						unsubscribeBtn.setClickable(false);
+					} else {
+						unsubscribeBtn.setText("会员退订");
+						unsubscribeBtn.setClickable(true);
+					}
 				} else if (activeStatusValue.equals("N")) {
 					if(userStatusValue.equals("T")) {
 						unsubscribeBtn.setText("重新订菜");

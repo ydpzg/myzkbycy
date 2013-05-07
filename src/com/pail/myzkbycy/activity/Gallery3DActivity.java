@@ -114,8 +114,8 @@ public class Gallery3DActivity extends BaseActivity {
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		super.onBackPressed();
-		galleryImageAdapter.BitmapRecycle();
-		System.gc();
+//		galleryImageAdapter.BitmapRecycle();
+//		System.gc();
 	}
 	@Override
 	protected void onDestroy() {

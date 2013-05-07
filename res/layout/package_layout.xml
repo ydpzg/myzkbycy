@@ -24,7 +24,9 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:text="@string/package_prompt"
-            android:textColor="@color/black"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#FF0000"
             android:textSize="15sp" />
         <Button
             android:id="@+id/submit_btn"
@@ -35,6 +37,8 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
+            android:background="@drawable/button1"
+            android:textColor="@color/white"
             android:visibility="gone"
             android:text="更改套餐" />
 

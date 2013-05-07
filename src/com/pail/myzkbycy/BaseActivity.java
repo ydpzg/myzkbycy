@@ -25,8 +25,6 @@ import android.widget.Toast;
  * 
  * @ClassName BaseActivity.java
  * @Description 自定义一个activity基类
- * @author Derek zhang dzhang@xtremeprog.com
- * @date 2013-1-9
  * 
  */
 public class BaseActivity extends Activity implements View.OnClickListener {

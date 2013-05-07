@@ -4,9 +4,7 @@ import android.content.Context;
 
 
 /**
- * 3
  * @Description 控制数据库的初始化
- * @date 2012-9-4
  *
  */
 

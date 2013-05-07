@@ -13,7 +13,6 @@ import android.content.SharedPreferences.Editor;
 /**
  * @ClassName HistroyUserPreferences.java
  * @Description 保存历史用户,并记录有无记住密码
- * @date 2013-1-10
  * 
  */
 public class HistroyUserPreferences {

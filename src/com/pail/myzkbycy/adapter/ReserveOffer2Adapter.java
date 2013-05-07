@@ -6,9 +6,9 @@ import java.util.Map;
 import org.apache.http.cookie.Cookie;
 
 import com.pail.myzkbycy.R;
-import com.pail.myzkbycy.activity.AllPlantActivity;
+import com.pail.myzkbycy.activity.AllPlant_backup_Activity;
 import com.pail.myzkbycy.activity.CookMethodActivity;
-import com.pail.myzkbycy.activity.PlantNutritionActivity;
+import com.pail.myzkbycy.activity.PlantNutrition_backup_Activity;
 
 import android.app.Activity;
 import android.content.ClipData.Item;

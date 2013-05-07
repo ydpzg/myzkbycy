@@ -45,4 +45,17 @@ public class NetworkUtil {
         }  
         return true;  
     }
+	public boolean isWifiWork(Context context)
+	{  
+		boolean res = true;
+		ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);    
+        NetworkInfo networkinfo = manager.getActiveNetworkInfo();  
+       
+        if (networkinfo == null || !networkinfo.isAvailable()) {    
+        	res = false;
+        } else if(networkinfo.getType() != manager.TYPE_WIFI) {
+        	res = false;
+        }
+        return res;
+	}
 }

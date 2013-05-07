@@ -7,8 +7,6 @@ import java.lang.reflect.Method;
 /**
  * @ClassName StringFactory.java
  * @Description TODO
- * @author Derek zhang dzhang@xtremeprog.com
- * @date 2012-7-31
  * 
  */
 public class StringFactory {

@@ -7,6 +7,7 @@ public class PlantInfo {
 	String plantName;
 	String expectedTime;
 	String plantContext;
+	String webLink;
 	
 	public int getPlantId() {
 		return plantId;
@@ -46,6 +47,14 @@ public class PlantInfo {
 
 	public void setPlantContext(String plantContext) {
 		this.plantContext = plantContext;
+	}
+
+	public String getWebLink() {
+		return webLink;
+	}
+
+	public void setWebLink(String webLink) {
+		this.webLink = webLink;
 	}
 
 	@Override
