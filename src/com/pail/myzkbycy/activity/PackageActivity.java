@@ -1,71 +1,33 @@
 package com.pail.myzkbycy.activity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import com.pail.myzkbycy.BaseActivity;
 import com.pail.myzkbycy.R;
-import com.pail.myzkbycy.activity.UnsubscribeActivity.cancelServerFromURL;
-import com.pail.myzkbycy.activity.UnsubscribeActivity.getUserActiveFromURL;
-import com.pail.myzkbycy.adapter.AllPlantAdapter;
-import com.pail.myzkbycy.bean.NotificationData;
-import com.pail.myzkbycy.bean.Plant_Detail;
 import com.pail.myzkbycy.bean.SetMealModel;
-import com.pail.myzkbycy.bean.UserInfData;
-import com.pail.myzkbycy.constants.Constant;
-import com.pail.myzkbycy.control.AutoLoginPreferences;
-import com.pail.myzkbycy.control.HistroyUserPreferences;
 import com.pail.myzkbycy.control.LoginUserPreferences;
-import com.pail.myzkbycy.control.SetPreferences;
 import com.pail.myzkbycy.lib.UserFunctions;
-import com.pail.myzkbycy.lib.UserModel;
 import com.pail.myzkbycy.util.DialogUtil;
 import com.pail.myzkbycy.util.NetworkUtil;
 import com.pail.myzkbycy.util.PxUtil;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Editable;
-import android.text.Html;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
 public class PackageActivity extends BaseActivity {

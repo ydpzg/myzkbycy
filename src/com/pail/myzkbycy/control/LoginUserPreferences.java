@@ -36,9 +36,17 @@ public class LoginUserPreferences {
 		edit.putString("login_user", user);
 		edit.commit();
 	}
+	public void setValue(String key, String value) {
+		Editor edit = sharedSet.edit();
+		edit.putString(key, value);
+		edit.commit();
+	}
 	
 	public String getLoginUser() {
 		return sharedSet.getString("login_user", "");
+	}
+	public String getValue(String key) {
+		return sharedSet.getString(key, "");
 	}
 	
 	public void cleanLoginUser() {

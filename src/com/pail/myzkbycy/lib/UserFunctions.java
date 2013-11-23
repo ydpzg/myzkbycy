@@ -11,6 +11,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import com.pail.myzkbycy.bean.CaisNow;
 import com.pail.myzkbycy.util.NetworkUtil;
 
 import android.app.ProgressDialog;
@@ -22,8 +23,8 @@ public class UserFunctions {
 	private static JSONParser jsonParser;
 	private static UserFunctions userFunctions;
 //	private static String IPaddr = "http://119.147.24.224/phone/index.php";
-	private static String IPaddr = "http://www.zkbycy.com/phone/index.php";
-//	private static String IPaddr = "http://192.168.1.22/my_zkbycy/phone/index.php";
+//	private static String IPaddr = "http://www.zkbycy.com/phone/index.php";
+	private static String IPaddr = "http://192.168.0.102/my_zkbycy/phone/index.php";
 //	private static String IPaddr = "http://ydpproject001.sinaapp.com/";
 	private static String loginURL = IPaddr;
 	private static String registerURL = IPaddr;
@@ -85,6 +86,45 @@ public class UserFunctions {
 		// Log.e("JSON", json.toString());
 		return json;
 	}
+	public static JSONObject getReserveCai(String login_name, String sess_user_id){
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", "reserve"));
+		params.add(new BasicNameValuePair("inter_tag", "query_cai"));
+		params.add(new BasicNameValuePair("login_name", login_name));
+		params.add(new BasicNameValuePair("sess_user_id", sess_user_id));
+		JSONObject json = jsonParser.getJSONFromUrl(IPaddr, params);
+		// return json
+		// Log.e("JSON", json.toString());
+		return json;
+	}
+	public static JSONObject modifyReserveCai(String login_name, String sess_user_id, CaisNow caisNowA, CaisNow caisNowB, CaisNow caisNowC){
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", "reserve"));
+		params.add(new BasicNameValuePair("inter_tag", "modify_cai"));
+		params.add(new BasicNameValuePair("login_name", login_name));
+		params.add(new BasicNameValuePair("sess_user_id", sess_user_id));
+		if(caisNowA != null) {
+			params.add(new BasicNameValuePair("xuanCai_A", caisNowA.getTemp_zhongcai_id()));
+		} else {
+			params.add(new BasicNameValuePair("xuanCai_A", ""));
+		}
+		if(caisNowB != null) {
+			params.add(new BasicNameValuePair("xuanCai_B", caisNowB.getTemp_zhongcai_id()));
+		} else {
+			params.add(new BasicNameValuePair("xuanCai_B", ""));
+		}
+		if(caisNowC != null) {
+			params.add(new BasicNameValuePair("xuanCai_C", caisNowC.getTemp_zhongcai_id()));
+		} else {
+			params.add(new BasicNameValuePair("xuanCai_C", ""));
+		}
+		JSONObject json = jsonParser.getJSONFromUrl(IPaddr, params);
+		// return json
+		// Log.e("JSON", json.toString());
+		return json;
+	}
 	public static JSONObject getSetmeal(String login_name, String changesetmeal, String issetting){
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -104,7 +144,6 @@ public class UserFunctions {
 		params.add(new BasicNameValuePair("inter_tag", "titleNoti"));
 		JSONObject json = jsonParser.getJSONFromUrl(IPaddr, params);
 		// return json
-		// Log.e("JSON", json.toString());
 		return json;
 	}
 	public static JSONObject getContentNotification(String news_id){

@@ -1,10 +1,8 @@
 package com.pail.myzkbycy.activity;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,12 +18,10 @@ import com.pail.myzkbycy.util.NetworkUtil;
 import com.pail.myzkbycy.util.PxUtil;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -33,7 +29,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnDragListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -62,7 +57,9 @@ public class MainActivity extends BaseActivity {
 			R.drawable.my_all_plant,
 			R.drawable.my_package_inf,
 			R.drawable.my_unsubscribe,
-			R.drawable.my_setup_admin };
+			R.drawable.my_setup_admin,
+			R.drawable.my_setup_admin
+			};
 	int[] name_page = new int[] { 
 			R.string.main_notification,
 			R.string.main_user_inf, 
@@ -72,11 +69,11 @@ public class MainActivity extends BaseActivity {
 			R.string.main_all_plant,
 			R.string.main_package_inf,
 			R.string.main_unsubscribe,
-			R.string.main_setup_admin };
+			R.string.main_setup_admin,
+			R.string.main_reverse_cai};
 	private long exitTime = 0;
 	private NotificationData notificationData;
 	private RotateAnimation anim_rotate = null;
-	private Button loading;
 	private TextView bottom_title, bottom_date;
 	private PopupWindow popup;
 	private RelativeLayout parentLayout;
@@ -262,6 +259,11 @@ public class MainActivity extends BaseActivity {
 			Intent intent = new Intent(MainActivity.this,
 					PackageActivity.class);
 			startActivityForResult(intent, Constant.MAIN_EXIT);
+		} else if (item.get("ItemText").toString()
+				.equals(getString(R.string.main_reverse_cai))) {
+			Intent intent = new Intent(MainActivity.this,
+					ReserveCaiActivity.class);
+			startActivity(intent);
 		}
 	}
 

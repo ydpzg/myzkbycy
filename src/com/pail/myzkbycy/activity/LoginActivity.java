@@ -15,7 +15,6 @@ import org.json.JSONObject;
 
 import com.pail.myzkbycy.BaseActivity;
 import com.pail.myzkbycy.R;
-import com.pail.myzkbycy.bean.PlantInfo;
 import com.pail.myzkbycy.constants.Constant;
 import com.pail.myzkbycy.control.AutoLoginPreferences;
 import com.pail.myzkbycy.control.HistroyUserPreferences;
@@ -23,16 +22,12 @@ import com.pail.myzkbycy.control.LoginUserPreferences;
 import com.pail.myzkbycy.dao.DaoCenter;
 import com.pail.myzkbycy.dao.LSqlContants;
 import com.pail.myzkbycy.lib.UserFunctions;
-import com.pail.myzkbycy.lib.UserModel;
 import com.pail.myzkbycy.util.DialogUtil;
 import com.pail.myzkbycy.util.NetworkUtil;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.DatabaseUtils;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -61,7 +56,7 @@ import android.widget.LinearLayout;
 
 public class LoginActivity extends BaseActivity {
 	private EditText et_userName, et_password;
-	private Button btn_historyUser, btn_login, btn_regist;
+	private Button btn_historyUser, btn_login;
 	private CheckBox cb_rememberPassword, cb_autoLogin;
 	private LinearLayout llt_userName;
 	private DialogUtil dialogUtil;
@@ -79,6 +74,7 @@ public class LoginActivity extends BaseActivity {
 	private JSONObject json;
 	private AutoLoginPreferences autoLoginPreferences;
 	private DaoCenter dao;
+	private String sess_user_id;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -466,6 +462,7 @@ public class LoginActivity extends BaseActivity {
 		Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 //		intent.putExtra("userModel", userModel);
 		LoginUserPreferences.getInstance(this).setLoginUser(et_userName.getText().toString());
+		LoginUserPreferences.getInstance(this).setValue("sess_user_id", sess_user_id);
 		startActivity(intent);
 	}
 
@@ -530,6 +527,7 @@ public class LoginActivity extends BaseActivity {
 				try {
 					String successString = json.getString("success");
 
+					sess_user_id = json.getString("sess_user_id");
 					if (successString.equals("1")) {
 						// Toast.makeText(LoginActivity.this, "登陆成功",
 						// Toast.LENGTH_SHORT).show();
@@ -549,6 +547,7 @@ public class LoginActivity extends BaseActivity {
 						}
 						autoLoginPreferences.setNameValue("user", et_userName.getText().toString());
 						autoLoginPreferences.setNameValue("password", et_password.getText().toString());
+						
 //						
 //						UserModel userModel = new UserModel();
 //						userModel.setUser(et_userName.getText().toString());

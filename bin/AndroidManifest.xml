@@ -95,6 +95,10 @@
             android:name=".activity.NotificationSonActivity"
             android:theme="@android:style/Theme.NoTitleBar"
             ></activity> 
+        <activity 
+            android:name=".activity.ReserveCaiActivity"
+            android:theme="@android:style/Theme.NoTitleBar"
+            ></activity> 
     </application>
 	
     <!-- Allow to connect with internet -->

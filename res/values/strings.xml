@@ -30,6 +30,7 @@
     <string name="main_payment_query">缴费查询</string>
     <string name="main_unsubscribe">会员退订</string>
     <string name="main_setup_admin">设置管理</string>
+    <string name="main_reverse_cai">预定配菜</string>
     <string name="main_transferaccounts">待定</string>
     <string name="main_caifutongrecharge">财付通充值</string>
     <string name="main_payforzhifubao">支付宝付款</string>
